@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useBlueprintNodes, type BlueprintNode } from "../hooks/useBlueprintNodes";
 
 // ─── Design tokens ──────────────────────────────────────────────────────────
@@ -181,7 +181,67 @@ function TooltipDivider() {
 // ─── Touch device detection ─────────────────────────────────────────────────
 const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
 
-// ─── Status bar ─────────────────────────────────────────────────────────────
+// ─── Mobile inspect panel ─────────────────────────────────────────────────────────────────────────
+function MobileInspectPanel({ node, onDismiss }: { node: BlueprintNode; onDismiss: () => void }) {
+  const { type, instanceId, logic, tagName, interactive, rect, font } = node;
+  const accentColor = interactive ? C.interact : C.boundary;
+  const tier = type.split(":")[0] ?? "";
+  return (
+    <motion.div
+      data-mobile-panel=""
+      initial={{ y: 80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 80, opacity: 0 }}
+      transition={{ type: "spring", stiffness: 380, damping: 36 }}
+      style={{
+        position: "fixed",
+        bottom: 40,
+        left: 8,
+        right: 8,
+        zIndex: 10150,
+        backgroundColor: C.tooltipBg,
+        border: `1px solid ${accentColor}`,
+        color: C.tooltipText,
+        fontFamily: FONT,
+        fontSize: "11px",
+        padding: "12px 16px",
+        lineHeight: "1.75",
+        boxShadow: `3px 3px 0 ${accentColor}`,
+        pointerEvents: "auto",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+        <span style={{ color: accentColor, fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.07em", fontSize: "10px" }}>
+          {type}
+        </span>
+        <button
+          onClick={onDismiss}
+          style={{
+            background: "none",
+            border: "none",
+            color: C.muted,
+            cursor: "pointer",
+            fontFamily: FONT,
+            fontSize: "16px",
+            padding: "0 4px",
+            lineHeight: 1,
+          }}
+        >
+          ✕
+        </button>
+      </div>
+      <TooltipRow label="element" value={`<${tagName}>`} valueColor={C.muted} />
+      <TooltipRow label="tier"    value={tier} />
+      {instanceId && <TooltipRow label="id"    value={instanceId} />}
+      {logic      && <TooltipRow label="logic" value={logic} valueColor={C.logic} />}
+      <TooltipDivider />
+      <TooltipRow label="size"      value={`${Math.round(rect.width)} × ${Math.round(rect.height)}px`} />
+      <TooltipRow label="font-size" value={font.size} />
+    </motion.div>
+  );
+}
+
+// ─── Status bar ────────────────────────────────────────────────────────────────────────
 function StatusBar() {
   return (
     <motion.div
@@ -275,6 +335,29 @@ export const BlueprintOverlay: React.FC<Props> = ({ active, suspended = false })
     return () => window.removeEventListener("mousemove", onMove);
   }, [active]);
 
+  // Tap detection — mobile only. Pick smallest node under the finger.
+  useEffect(() => {
+    if (!active || !isTouchDevice) return;
+    const onTouch = (e: TouchEvent) => {
+      // Ignore taps on the inspect panel so reading it doesn’t re-trigger selection
+      if ((e.target as HTMLElement | null)?.closest("[data-mobile-panel]")) return;
+      const touch = e.changedTouches[0];
+      if (!touch) return;
+      const hit = nodesRef.current
+        .filter(n =>
+          touch.clientX >= n.rect.left && touch.clientX <= n.rect.left + n.rect.width &&
+          touch.clientY >= n.rect.top  && touch.clientY <= n.rect.top  + n.rect.height
+        )
+        .reduce<BlueprintNode | null>((best, n) => {
+          if (!best) return n;
+          return n.rect.width * n.rect.height < best.rect.width * best.rect.height ? n : best;
+        }, null);
+      setHoveredId(hit ? hit.id : null);
+    };
+    window.addEventListener("touchend", onTouch);
+    return () => window.removeEventListener("touchend", onTouch);
+  }, [active]);
+
   if (!active) return null;
 
   return (
@@ -316,8 +399,8 @@ export const BlueprintOverlay: React.FC<Props> = ({ active, suspended = false })
               }}
             >
               {/* Component type label chip — hidden for auto-interactive unless hovered;
-                  never shown on touch devices (tap fires synthetic mousemove) */}
-              {!isTouchDevice && (!isAutoInteractive || hovered) && (
+                  on touch: shown only when this node is the currently-tapped one */}
+              {(isTouchDevice ? hovered : (!isAutoInteractive || hovered)) && (
                 <span
                   style={{
                     position: "absolute",
@@ -359,8 +442,8 @@ export const BlueprintOverlay: React.FC<Props> = ({ active, suspended = false })
                 />
               )}
 
-              {/* Dimension badge — only on hovered node on desktop; never on touch */}
-              {hovered && !isTouchDevice && (
+              {/* Dimension badge — shown on hovered node (desktop hover or mobile tap) */}
+              {hovered && (
                 <div
                   style={{
                     position: "absolute",
@@ -392,6 +475,13 @@ export const BlueprintOverlay: React.FC<Props> = ({ active, suspended = false })
 
       {/* Tooltip — follows cursor, desktop only */}
       {!isTouchDevice && hoveredNode && <Tooltip node={hoveredNode} mouseX={mouse.x} mouseY={mouse.y} />}
+
+      {/* Mobile inspect panel — slides up from bottom on tap */}
+      <AnimatePresence>
+        {isTouchDevice && hoveredNode && (
+          <MobileInspectPanel node={hoveredNode} onDismiss={() => setHoveredId(null)} />
+        )}
+      </AnimatePresence>
 
       {/* Status bar — always visible while blueprint is active */}
       <StatusBar />

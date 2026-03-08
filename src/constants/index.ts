@@ -114,6 +114,7 @@ export const PROJECTS: Project[] = [
     teamRole: "solo",
     year: "2026",
     readme: portfolioReadme,
+    githubUrl: "https://github.com/Marvs04/brutafolio",
     problem: "Portfolios are typically static and fail to communicate how a developer reasons through trade-offs and system design.",
     problem_es: "Los portafolios suelen ser estáticos y no logran comunicar cómo un desarrollador razona ante compromisos y decisiones de diseño de sistemas.",
     currentChallenge: "Keeping the constraint engine honest and the content accurate — a portfolio that misrepresents you is worse than none.",

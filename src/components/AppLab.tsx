@@ -1,7 +1,7 @@
 import React from "react";
 import { Project } from "../types";
 import { motion } from "motion/react";
-import { Beaker, Construction, CheckCircle2, AlertCircle, Lightbulb } from "lucide-react";
+import { Beaker, Construction, CheckCircle2, AlertCircle, Lightbulb, Github, ExternalLink } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../i18n/translations";
@@ -114,6 +114,34 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
                 </span>
               ))}
             </div>
+
+            {/* Links row */}
+            {(project.githubUrl || project.link) && (
+              <div className="mt-4 flex gap-3">
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub repository"
+                    className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                  >
+                    <Github size={12} /> GitHub
+                  </a>
+                )}
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Live site"
+                    className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                  >
+                    <ExternalLink size={12} /> Live
+                  </a>
+                )}
+              </div>
+            )}
           </motion.div>
         ))}
       </div>

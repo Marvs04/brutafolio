@@ -133,6 +133,7 @@ export const MainLayout: React.FC<Props> = ({
             <button
               onClick={toggleBlueprintMode}
               data-blueprint-skip
+              aria-label={blueprintMode ? "Exit blueprint mode" : "Enter blueprint mode"}
               className={cn(
                 "h-8 px-3 border-2 flex items-center justify-center transition-all",
                 blueprintMode
@@ -145,6 +146,7 @@ export const MainLayout: React.FC<Props> = ({
             <button
               onClick={toggleLang}
               data-blueprint-skip
+              aria-label={`Switch to ${lang === "en" ? "Spanish" : "English"}`}
               className="h-8 px-3 border-2 border-ink font-mono text-[10px] uppercase bg-white hover:bg-ink hover:text-white transition-all"
             >
               {lang === "en" ? "ES" : "EN"}

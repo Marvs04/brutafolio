@@ -65,8 +65,11 @@ export const HomePage: React.FC = () => {
             <img
               src="/portfolio-portrait.png"
               alt="Marvin Moncada"
+              width={1376}
+              height={752}
               className="w-full h-auto block"
               loading="eager"
+              fetchPriority="high"
               data-blueprint="atom:portrait"
               data-blueprint-id="portrait"
               data-blueprint-logic="Static asset — /portfolio-portrait.png, w-full h-auto (no crop)"
