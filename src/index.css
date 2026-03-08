@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Apple Space Black / Silver — Brutalism structure on top */
+  --color-ink:    #1D1D1F;
+  --color-paper:  #F5F5F7;
+  /* Apple iOS Blue replaces orange as primary accent */
+  --color-accent: #007AFF;
+  --color-danger: #FF375F;
+  /* supporting Apple palette — names don't clash with Tailwind's built-in scales */
+  --color-volt:   #FFD60A;
+  --color-signal: #30D158;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+}
+
+@utility brutalist-border {
+  @apply border-2 border-ink;
+}
+
+@utility brutalist-shadow {
+  @apply shadow-[4px_4px_0px_0px_#1D1D1F];
+}
+
+@utility brutalist-shadow-lg {
+  @apply shadow-[6px_6px_0px_0px_#1D1D1F];
+}
+
+@utility brutalist-shadow-hover {
+  @apply hover:shadow-[2px_2px_0px_0px_#1D1D1F] hover:translate-x-[2px] hover:translate-y-[2px] transition-all;
+}
+
+@utility brutalist-card {
+  @apply bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#007AFF] p-6;
+}
+
+@utility brutalist-button {
+  @apply bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#007AFF] hover:shadow-[2px_2px_0px_0px_#007AFF] hover:translate-x-[2px] hover:translate-y-[2px] transition-all px-4 py-2 font-mono text-sm uppercase tracking-tighter;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
