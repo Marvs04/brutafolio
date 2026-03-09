@@ -59,7 +59,7 @@ export const translations = {
     cvDomains: "Domains",
     cvTrajectory: "Professional Trajectory",
     cvDownload: "Download PDF CV",
-    cvDegree: "Ingeniero en Sistemas",
+    cvDegree: "B.S. in Computer Science",
     cvUniversity: "UNADECA // Costa Rica",
     cvDomain1: "// Frontend Engineering — React · TypeScript · Tailwind",
     cvDomain2: "// Role-Based Platform Architecture",
