@@ -1,6 +1,7 @@
-﻿import React from "react";
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { MainLayout } from "./layouts/MainLayout";
 import { useBlueprint } from "./context/BlueprintContext";
@@ -38,6 +39,7 @@ export default function App() {
           </Routes>
         </motion.div>
       </AnimatePresence>
+      <Analytics />
     </MainLayout>
   );
 }
