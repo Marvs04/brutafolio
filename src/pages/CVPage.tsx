@@ -28,21 +28,35 @@ export const CVPage: React.FC = () => {
     { role: t.cvRole4, company: t.cvCompany4, period: t.cvPeriod4, desc: t.cvDesc4 },
   ];
 
+  const [isDownloading, setIsDownloading] = React.useState(false);
+
   const handleDownload = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    const url = isES ? "/cv-es.pdf" : "/cv-en.pdf";
-    const res = await fetch(url, { method: "HEAD" });
-    if (res.ok && res.headers.get("content-type")?.includes("pdf")) {
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = isES ? "Marvin-Moncada-CV-ES.pdf" : "Marvin-Moncada-CV-EN.pdf";
-      a.click();
-    } else {
+    setIsDownloading(true);
+    try {
+      const url = isES ? "/cv-es.pdf" : "/cv-en.pdf";
+      const res = await fetch(url, { method: "HEAD" });
+      if (res.ok && res.headers.get("content-type")?.includes("pdf")) {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = isES ? "Marvin-Moncada-CV-ES.pdf" : "Marvin-Moncada-CV-EN.pdf";
+        a.click();
+      } else {
+        alert(
+          isES
+            ? "El PDF aún no está disponible. Por favor vuelve más tarde."
+            : "PDF not available yet. Please check back soon."
+        );
+      }
+    } catch (error) {
+      console.error("Download failed:", error);
       alert(
         isES
-          ? "El PDF aún no está disponible. Por favor vuelve más tarde."
-          : "PDF not available yet. Please check back soon."
+          ? "Error al descargar. Intenta de nuevo."
+          : "Download error. Please try again."
       );
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -71,8 +85,7 @@ export const CVPage: React.FC = () => {
           02 / CV
         </p>
         <h1
-          className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white"
-          style={{ fontSize: "clamp(2.8rem, 7vw, 6rem)" }}
+          className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white text-5xl md:text-6xl lg:text-7xl"
           data-blueprint="atom:page-title"
           data-blueprint-id="cv-title"
           data-blueprint-logic="Static heading — MARVIN MONCADA in Apple Blue"
@@ -93,7 +106,7 @@ export const CVPage: React.FC = () => {
             data-blueprint-id="cv-download-btn"
             data-blueprint-logic="Download PDF — HEAD check before link click"
           >
-            <Download size={11} />
+            <Download size={16} />
             PDF
           </a>
         </div>
@@ -166,7 +179,7 @@ export const CVPage: React.FC = () => {
             <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-ink/30 mb-5">
               {t.cvDomains}
             </p>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {[t.cvDomain1, t.cvDomain2, t.cvDomain3, t.cvDomain4].map((d, i) => (
                 <li
                   key={i}
@@ -200,10 +213,9 @@ export const CVPage: React.FC = () => {
                 data-blueprint-id={`timeline-${i}`}
                 data-blueprint-logic={`experiences[${i}] — ${exp.company}`}
               >
-                <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 mb-3">
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-3 mb-3">
                   <h3
-                    className="font-mono font-bold uppercase tracking-tighter text-ink leading-none"
-                    style={{ fontSize: "clamp(1.1rem, 2.2vw, 1.5rem)" }}
+                    className="font-mono font-bold uppercase tracking-tighter text-ink leading-none text-lg md:text-xl"
                   >
                     {exp.role}
                   </h3>
@@ -230,7 +242,7 @@ export const CVPage: React.FC = () => {
               href={isES ? "/cv-es.pdf" : "/cv-en.pdf"}
               download
               onClick={handleDownload}
-              className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] border-2 border-ink px-6 py-3 text-ink hover:bg-ink hover:text-white transition-all"
+              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border-2 border-ink px-4 py-2 text-ink hover:bg-ink hover:text-white transition-all"
               style={{ boxShadow: `3px 3px 0px 0px ${APPLE_BLUE}` }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "none")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = `3px 3px 0px 0px ${APPLE_BLUE}`)}
@@ -238,7 +250,7 @@ export const CVPage: React.FC = () => {
               data-blueprint-id="cv-download-main"
               data-blueprint-logic="Download PDF — HEAD check before link click"
             >
-              <Download size={12} />
+              <Download size={16} />
               {t.cvDownload}
             </a>
             <p className="font-mono text-[9px] uppercase tracking-widest text-ink/25">

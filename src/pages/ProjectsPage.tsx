@@ -36,8 +36,7 @@ export const ProjectsPage: React.FC = () => {
                 {isES ? "01 / Proyectos" : "01 / Projects"}
               </p>
               <h1
-                className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white"
-                style={{ fontSize: "clamp(2.8rem, 7vw, 6rem)" }}
+                className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white text-5xl md:text-6xl lg:text-7xl"
                 data-blueprint="atom:page-title"
                 data-blueprint-id="projects-title"
                 data-blueprint-logic="Static heading — bilingual, font-mono bold clamp"
@@ -87,8 +86,7 @@ export const ProjectsPage: React.FC = () => {
                       {/* Title + links */}
                       <div className="flex justify-between items-start gap-3 mb-4">
                         <h2
-                          className="font-mono font-bold uppercase tracking-tighter text-ink leading-[0.9]"
-                          style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)" }}
+                          className="font-mono font-bold uppercase tracking-tighter text-ink leading-[0.9] text-xl md:text-2xl lg:text-3xl"
                         >
                           {project.title}
                         </h2>

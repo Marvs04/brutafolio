@@ -18,6 +18,7 @@ export const HomePage: React.FC = () => {
   const { lang } = useLanguage();
   const isES = lang === "es";
   const { blueprintMode, toggleBlueprintMode } = useBlueprint();
+  const [imageError, setImageError] = React.useState(false);
 
   return (
     <div
@@ -55,8 +56,7 @@ export const HomePage: React.FC = () => {
                 {isES ? "Desarrollador" : "Developer"}
               </p>
               <p
-                className="font-mono font-bold uppercase tracking-tighter leading-[0.88] text-white w-full"
-                style={{ fontSize: "clamp(3.5rem, 7.5vw, 7.5rem)" }}
+                className="font-mono font-bold uppercase tracking-tighter leading-[0.88] text-white w-full text-6xl md:text-7xl"
               >
                 MARVIN<br />
                 <span style={{ color: APPLE_BLUE }}>MONCADA</span>
@@ -67,13 +67,20 @@ export const HomePage: React.FC = () => {
               alt="Marvin Moncada"
               width={1376}
               height={752}
-              className="w-full h-auto block"
+              className="w-full h-auto block bg-white/5"
               loading="eager"
               fetchPriority="high"
+              onError={() => setImageError(true)}
+              style={{ display: imageError ? "none" : "block" }}
               data-blueprint="atom:portrait"
               data-blueprint-id="portrait"
               data-blueprint-logic="Static asset — /portfolio-portrait.png, w-full h-auto (no crop)"
             />
+            {imageError && (
+              <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                <p className="font-mono text-[9px] text-white/30">Portrait unavailable</p>
+              </div>
+            )}
           </div>
 
           {/* RIGHT  navigation cards */}
@@ -145,8 +152,7 @@ export const HomePage: React.FC = () => {
                       {num}
                     </p>
                     <p
-                      className="font-mono font-bold uppercase tracking-tighter text-white/70 group-hover:text-white transition-colors"
-                      style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)" }}
+                      className="font-mono font-bold uppercase tracking-tighter text-white/70 group-hover:text-white transition-colors text-2xl md:text-3xl"
                     >
                       {label}
                     </p>
@@ -223,8 +229,8 @@ export const HomePage: React.FC = () => {
               data-blueprint-logic={`Static: ${n} / ${l}`}
             >
               <div
-                className="font-mono font-bold tracking-tighter leading-none mb-2"
-                style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)", color: INK }}
+                className="font-mono font-bold tracking-tighter leading-none mb-2 text-3xl md:text-4xl lg:text-5xl"
+                style={{ color: INK }}
               >
                 {n}
               </div>
@@ -304,8 +310,7 @@ export const HomePage: React.FC = () => {
         data-blueprint-logic="Brand statement — DUC philosophy hook, Apple Blue bg"
       >
         <p
-          className="font-mono font-bold uppercase tracking-tighter text-white leading-[0.88]"
-          style={{ fontSize: "clamp(2.4rem, 8vw, 7.5rem)" }}
+          className="font-mono font-bold uppercase tracking-tighter text-white leading-[0.88] text-5xl md:text-6xl lg:text-7xl"
           data-blueprint="atom:statement-text"
           data-blueprint-id="statement-text"
           data-blueprint-logic="Static: CONSTRAINTS ARE THE BRIEF. — bilingual"
@@ -328,7 +333,7 @@ export const HomePage: React.FC = () => {
         data-blueprint-id="blueprint-cta"
         data-blueprint-logic="onClick: toggleBlueprintMode() — activates BlueprintOverlay globally via context"
       >
-        <div className="px-8 md:px-16 py-16 md:py-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+        <div className="px-8 md:px-16 py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10 min-h-[320px]">
           <div className="max-w-xl">
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-4">
               Blueprint Mode
@@ -369,7 +374,7 @@ export const HomePage: React.FC = () => {
         data-blueprint-id="duc-cta"
         data-blueprint-logic="Full-width CTA → /duc, INK bg, white button + Apple Blue shadow"
       >
-        <div className="px-8 md:px-16 py-16 md:py-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-10">
+        <div className="px-8 md:px-16 py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10 min-h-[320px]">
           <div className="max-w-xl">
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-4">
               Developer Under Constraints

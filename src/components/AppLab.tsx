@@ -23,8 +23,8 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="font-mono font-bold uppercase tracking-tighter leading-none mb-2" style={{ fontSize: "clamp(1.5rem,3vw,2.4rem)" }}>{t.appLabTitle}</h2>
-          <p className="text-[9px] font-mono opacity-40 uppercase tracking-[0.3em]">{t.appLabSubtitle}</p>
+          <h2 className="font-mono font-bold uppercase tracking-tighter leading-none mb-2 text-lg md:text-xl lg:text-2xl">{t.appLabTitle}</h2>
+          <p className="text-[8px] md:text-[9px] font-mono opacity-40 uppercase tracking-[0.3em]">{t.appLabSubtitle}</p>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2 text-[10px] font-mono opacity-50">
@@ -61,7 +61,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
                 "w-10 h-10 brutalist-border flex items-center justify-center",
                 project.status === "WIP" ? "bg-accent/10 text-accent" : "bg-emerald-500/10 text-emerald-500"
               )}>
-                {project.status === "WIP" ? <Construction size={20} /> : <Beaker size={20} />}
+                {project.status === "WIP" ? <Construction className="w-5 h-5 md:w-6 md:h-6" /> : <Beaker className="w-5 h-5 md:w-6 md:h-6" />}
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[9px] font-mono opacity-40 uppercase tracking-widest">
@@ -77,10 +77,10 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
             </div>
 
             <div className="flex-grow space-y-4">
-              <h3 className="font-mono font-bold tracking-tighter uppercase" style={{ fontSize: "clamp(1.1rem,2vw,1.5rem)" }}>{project.title}</h3>
+              <h3 className="font-mono font-bold tracking-tighter uppercase text-base md:text-lg lg:text-xl">{project.title}</h3>
               
               <div className="space-y-2">
-                <span className="text-[9px] font-mono uppercase opacity-40 block">{t.labelProblem}</span>
+                <span className="text-[8px] md:text-[9px] font-mono uppercase opacity-40 block">{t.labelProblem}</span>
                 <p className="text-sm leading-relaxed italic">
                   "{lang === "es" ? (project.problem_es || project.problem) : project.problem}"
                 </p>
@@ -88,7 +88,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
 
               {project.currentChallenge && (
                 <div className="space-y-2">
-                  <span className="text-[9px] font-mono uppercase opacity-40 block">{t.labelChallenge}</span>
+                  <span className="text-[8px] md:text-[9px] font-mono uppercase opacity-40 block">{t.labelChallenge}</span>
                   <div className="flex gap-2 items-start text-xs bg-ink/5 p-3 brutalist-border border-dashed">
                     <AlertCircle size={14} className="flex-shrink-0 mt-0.5 text-accent" />
                     <p>{lang === "es" ? (project.currentChallenge_es || project.currentChallenge) : project.currentChallenge}</p>
@@ -98,7 +98,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
 
               {project.lessonLearned && (
                 <div className="space-y-2">
-                  <span className="text-[9px] font-mono uppercase opacity-40 block">{t.labelInsight}</span>
+                  <span className="text-[8px] md:text-[9px] font-mono uppercase opacity-40 block">{t.labelInsight}</span>
                   <div className="flex gap-2 items-start text-xs bg-emerald-500/5 p-3 brutalist-border border-emerald-500/20">
                     <Lightbulb size={14} className="flex-shrink-0 mt-0.5 text-emerald-500" />
                     <p className="opacity-80">{lang === "es" ? (project.lessonLearned_es || project.lessonLearned) : project.lessonLearned}</p>
@@ -109,7 +109,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
 
             <div className="mt-8 pt-6 border-t border-ink/10 flex flex-wrap gap-2">
               {project.techStack.map(tech => (
-                <span key={tech} className="text-[9px] font-mono bg-ink text-paper px-2 py-0.5 uppercase">
+                <span key={tech} className="text-[8px] md:text-[9px] font-mono bg-ink text-paper px-2 py-0.5 uppercase">
                   {tech}
                 </span>
               ))}
@@ -124,7 +124,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="GitHub repository"
-                    className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                    className="flex items-center gap-1.5 text-[9px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
                   >
                     <Github size={12} /> GitHub
                   </a>
@@ -135,7 +135,7 @@ export const AppLab: React.FC<Props> = ({ projects }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Live site"
-                    className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
+                    className="flex items-center gap-1.5 text-[9px] md:text-[10px] font-mono uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
                   >
                     <ExternalLink size={12} /> Live
                   </a>

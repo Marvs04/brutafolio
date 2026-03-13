@@ -61,7 +61,7 @@ export const DUCPage: React.FC = () => {
     >
       {/* ── Dark identity strip ── */}
       <div
-        className="border-b-4 border-ink px-8 md:px-14 py-10 shrink-0"
+        className="border-b-4 border-ink px-8 md:px-14 py-12 md:py-16 shrink-0"
         style={{ backgroundColor: "#060606" }}
         data-blueprint="organism:page-header"
         data-blueprint-id="duc-page-header"
@@ -76,11 +76,10 @@ export const DUCPage: React.FC = () => {
           03 / D.U.C.
         </p>
         <h1
-          className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white"
-          style={{ fontSize: "clamp(2.8rem, 7vw, 6rem)" }}
+          className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white text-5xl md:text-6xl lg:text-7xl"
           data-blueprint="atom:page-title"
           data-blueprint-id="duc-title"
-          data-blueprint-logic="Static heading — bilingual, font-mono bold clamp"
+          data-blueprint-logic="Static heading – bilingual, font-mono bold clamp"
         >
           {isES ? <>DESARROLLADOR<br />BAJO <span style={{ color: "#007AFF" }}>RESTRICCIONES_</span></> : <>DEVELOPER<br />UNDER <span style={{ color: "#007AFF" }}>CONSTRAINTS_</span></>}
         </h1>
@@ -117,7 +116,7 @@ export const DUCPage: React.FC = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "w-full lg:w-[360px] shrink-0 bg-white border-ink lg:border-r-2 border-r-4",
+          "w-full lg:w-72 xl:w-80 shrink-0 bg-white border-ink border-r-2",
           sidebarOpen ? "block border-b-4 p-6" : "hidden lg:block lg:p-8"
         )}
         data-blueprint="organism:sidebar"

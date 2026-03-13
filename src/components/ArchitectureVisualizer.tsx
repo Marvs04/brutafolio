@@ -23,7 +23,7 @@ export const ArchitectureVisualizer: React.FC<Props> = ({ decisions, riskMode })
       data-blueprint-logic="architectureService.getDecisions"
     >
       <div className="flex items-center justify-between mb-8">
-        <h2 className="font-mono font-bold uppercase tracking-tighter" style={{ fontSize: "clamp(1.2rem,2.5vw,1.8rem)" }}>{t.systemBlueprint}</h2>
+        <h2 className="font-mono font-bold uppercase tracking-tighter text-lg md:text-xl lg:text-2xl\">{t.systemBlueprint}</h2>
         {riskMode && (
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
@@ -70,7 +70,7 @@ export const ArchitectureVisualizer: React.FC<Props> = ({ decisions, riskMode })
                 )}
               </div>
               
-              <h3 className="font-mono font-bold uppercase tracking-tighter mb-2" style={{ fontSize: "clamp(1rem,2vw,1.25rem)" }}>{decision.choice}</h3>
+              <h3 className="font-mono font-bold uppercase tracking-tighter mb-2 text-base md:text-lg\">{decision.choice}</h3>
               <p className="text-sm opacity-70 mb-4 leading-relaxed">{rationale}</p>
               
               <div className="space-y-2">

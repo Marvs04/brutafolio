@@ -68,7 +68,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       return (
         <h2
           data-section={id}
-          className="font-mono font-bold uppercase tracking-tighter text-[1.3rem] mt-16 mb-5 pl-5 border-l-4 border-accent leading-tight"
+          className="font-mono font-bold uppercase tracking-tighter text-base md:text-lg lg:text-xl mt-10 md:mt-14 lg:mt-16 mb-3 md:mb-4 lg:mb-5 pl-3 md:pl-4 lg:pl-5 border-l-2 md:border-l-4 border-accent leading-tight"
         >
           {children}
         </h2>
@@ -80,22 +80,22 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       </h3>
     ),
     p: ({ children }) => (
-      <p className="font-mono text-[13px] leading-[1.85] text-ink/70 mb-5">{children}</p>
+      <p className="font-mono text-xs md:text-sm lg:text-base leading-relaxed md:leading-[1.75] lg:leading-[1.85] text-ink/70 mb-4 md:mb-5">{children}</p>
     ),
     blockquote: ({ children }) => (
       <blockquote className="border-l-4 border-accent bg-accent/[0.05] pl-6 py-4 my-8 space-y-2">
         {children}
       </blockquote>
     ),
-    ul: ({ children }) => <ul className="my-5 space-y-2">{children}</ul>,
+    ul: ({ children }) => <ul className="my-4 md:my-5 space-y-1 md:space-y-2">{children}</ul>,
     ol: ({ children }) => (
-      <ol className="my-5 space-y-2 list-decimal list-inside font-mono text-[13px] text-ink/70">
+      <ol className="my-4 md:my-5 space-y-1 md:space-y-2 list-decimal list-inside font-mono text-xs md:text-sm lg:text-base text-ink/70">
         {children}
       </ol>
     ),
     li: ({ children }) => (
-      <li className="flex gap-3 font-mono text-[13px] text-ink/70 leading-relaxed">
-        <span className="text-accent shrink-0 select-none font-bold mt-[3px] text-xs">
+      <li className="flex gap-2 md:gap-3 font-mono text-xs md:text-sm lg:text-base text-ink/70 leading-relaxed md:leading-[1.75]">
+        <span className="text-accent shrink-0 select-none font-bold text-[10px] md:text-xs">
           →
         </span>
         <span>{children}</span>
@@ -118,7 +118,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
     ),
     pre: ({ children }) => (
       <InCodeBlock.Provider value={true}>
-        <pre className="bg-ink text-paper font-mono text-[11px] p-5 overflow-x-auto my-8 leading-relaxed border-l-4 border-accent">
+        <pre className="bg-ink text-paper font-mono text-[9px] md:text-[10px] lg:text-[11px] p-3 md:p-4 lg:p-5 overflow-x-auto my-6 md:my-8 leading-relaxed border-l-2 md:border-l-4 border-accent">
           {children}
         </pre>
       </InCodeBlock.Provider>
@@ -137,12 +137,12 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       <tr className="border-b border-ink/10">{children}</tr>
     ),
     th: ({ children }) => (
-      <th className="text-left font-mono text-[10px] uppercase tracking-[0.12em] p-3 border border-ink/20 bg-ink/5">
+      <th className="text-left font-mono text-[8px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.12em] p-2 md:p-3 border border-ink/20 bg-ink/5">
         {children}
       </th>
     ),
     td: ({ children }) => (
-      <td className="p-3 border border-ink/10 font-mono text-[12px] text-ink/65">{children}</td>
+      <td className="p-2 md:p-3 border border-ink/10 font-mono text-[9px] md:text-[10px] lg:text-[12px] text-ink/65">{children}</td>
     ),
   };
 }
@@ -170,15 +170,15 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
       <div className="flex items-center gap-4 pb-5 mb-0 border-b-2 border-ink shrink-0 flex-wrap gap-y-3">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] opacity-50 hover:opacity-100 hover:text-accent transition-all shrink-0"
+          className="flex items-center gap-2 font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] opacity-50 hover:opacity-100 hover:text-accent transition-all shrink-0"
         >
-          <ArrowLeft size={13} />
+          <ArrowLeft size={14} />
           Projects
         </button>
 
         <span className="text-ink/20 shrink-0 select-none">|</span>
 
-        <span className="font-bold uppercase tracking-tighter text-sm truncate">
+        <span className="font-bold uppercase tracking-tighter text-xs md:text-sm truncate">
           {project.title}
         </span>
 
@@ -188,9 +188,9 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.15em] border border-ink/30 px-3 py-1.5 hover:bg-ink hover:text-paper hover:border-ink transition-colors"
+              className="flex items-center gap-1.5 font-mono text-[8px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.15em] border border-ink/30 px-3 py-2 hover:bg-ink hover:text-paper hover:border-ink transition-colors"
             >
-              <Github size={11} />
+              <Github size={14} />
               Source
             </a>
           )}
@@ -199,9 +199,9 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.15em] border border-accent px-3 py-1.5 text-accent hover:bg-accent hover:text-paper transition-colors"
+              className="flex items-center gap-1.5 font-mono text-[8px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.15em] border border-accent px-3 py-2 text-accent hover:bg-accent hover:text-paper transition-colors"
             >
-              <ExternalLink size={11} />
+              <ExternalLink size={14} />
               Live Site
             </a>
           )}
@@ -217,15 +217,15 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
             className="hidden lg:flex flex-col w-48 shrink-0 border-r-2 border-ink/10 pr-6 overflow-y-auto"
             aria-label="Table of contents"
           >
-            <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/30 mb-4">
+            <p className="font-mono text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-ink/30 mb-3 md:mb-4">
               Sections
             </p>
-            <ul className="space-y-0.5">
+            <ul className="space-y-1">
               {toc.map(({ id, text }) => (
                 <li key={id}>
                   <button
                     onClick={() => scrollTo(id)}
-                    className="w-full text-left font-mono text-[10px] uppercase tracking-[0.1em] opacity-45 hover:opacity-100 hover:text-accent transition-all py-1.5 leading-snug"
+                    className="w-full text-left font-mono text-[8px] md:text-[9px] uppercase tracking-[0.1em] opacity-45 hover:opacity-100 hover:text-accent transition-all py-1 md:py-2 leading-snug"
                   >
                     {text}
                   </button>

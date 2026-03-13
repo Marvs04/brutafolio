@@ -11,7 +11,7 @@ export function useConstraints() {
   const decisions = useMemo(() => architectureService.getDecisions(constraints), [constraints]);
   const projects = useMemo(() => projectService.calculateRelevance(constraints), [constraints]);
 
-  const updateConstraint = (key: keyof Constraints, value: any) => {
+  const updateConstraint = <K extends keyof Constraints>(key: K, value: Constraints[K]) => {
     setConstraints(prev => ({ ...prev, [key]: value }));
   };
 

@@ -1,15 +1,16 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
-import { Terminal, Github, Linkedin, Mail, Menu, X, ScanLine } from "lucide-react";
+import { Terminal, Github, Linkedin, Mail, Menu, X, ScanLine, Lightbulb } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { translations } from "../i18n/translations";
 import { cn } from "../lib/utils";
+import { STORAGE_KEYS } from "../constants";
 
 interface Props {
   children: React.ReactNode;
   blueprintMode: boolean;
-  toggleBlueprintMode: () => void;
+  toggleBlueprintMode: (source?: "header" | "keyboard") => void;
 }
 
 export const MainLayout: React.FC<Props> = ({
@@ -21,6 +22,16 @@ export const MainLayout: React.FC<Props> = ({
   const t = translations[lang];
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showBlueprintHint, setShowBlueprintHint] = useState(false);
+
+  // Show blueprint hint every time on home page
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setShowBlueprintHint(true);
+      const timer = setTimeout(() => setShowBlueprintHint(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
 
   const NAV_LINKS: { path: string; label: string; delay: number }[] = [
     { path: "/", label: lang === "en" ? "Home" : "Inicio", delay: 0 },
@@ -40,7 +51,8 @@ export const MainLayout: React.FC<Props> = ({
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header
-        className="border-b-4 border-ink bg-white sticky top-0 z-50"
+        className="sticky top-0 z-50"
+        style={{ backgroundColor: "#060606" }}
         {...(isTouchDevice
           ? { "data-blueprint-skip": "" }
           : { "data-blueprint": "organism:header", "data-blueprint-id": "main-header" }
@@ -67,10 +79,10 @@ export const MainLayout: React.FC<Props> = ({
                   to={path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "relative text-[10px] font-mono uppercase tracking-widest border-2 border-ink px-4 h-8 transition-all whitespace-nowrap inline-flex items-center justify-center min-w-[5.5rem]",
+                    "relative text-[9px] md:text-[10px] font-mono uppercase tracking-widest border-2 px-3 md:px-4 h-8 transition-all whitespace-nowrap inline-flex items-center justify-center min-w-max",
                     isActive(path)
-                      ? "bg-ink text-white shadow-[3px_3px_0px_0px_#007AFF]"
-                      : "bg-white text-ink hover:bg-ink hover:text-white hover:shadow-[3px_3px_0px_0px_#1D1D1F]"
+                      ? "bg-white text-black border-white shadow-[3px_3px_0px_0px_#007AFF]"
+                      : "bg-black text-white border-white hover:bg-white hover:text-black hover:shadow-[3px_3px_0px_0px_#1D1D1F]"
                   )}
                 >
                   {!isActive(path) && (
@@ -90,71 +102,115 @@ export const MainLayout: React.FC<Props> = ({
               </motion.div>
             ))}
 
-            <div className="h-4 w-px bg-ink/20 mx-1" />
+            <div className="h-4 w-px bg-white/20 mx-1" />
 
             {/* Blueprint toggle */}
-            <button
-              onClick={toggleBlueprintMode}
-              title="Blueprint X-Ray (B)"
-              className={cn(
-                "h-8 px-3 border-2 flex items-center justify-center transition-all",
-                blueprintMode
-                  ? "border-fuchsia-500 bg-fuchsia-500 text-white shadow-[2px_2px_0px_0px_#A21CAF]"
-                  : "border-ink bg-white hover:bg-ink hover:text-white"
+            <div className="relative">
+              <button
+                onClick={() => {
+                  toggleBlueprintMode("header");
+                  setShowBlueprintHint(false);
+                }}
+                title="Blueprint X-Ray (B)"
+                className={cn(
+                  "h-8 px-3 border-2 flex items-center justify-center transition-all relative text-white",
+                  blueprintMode
+                    ? "border-fuchsia-500 bg-fuchsia-500 shadow-[2px_2px_0px_0px_#A21CAF]"
+                    : "border-white hover:bg-white hover:text-black"
+                )}
+              >
+                <ScanLine size={13} />
+              </button>
+
+              {/* Hint tooltip on first visit */}
+              {showBlueprintHint && !blueprintMode && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full mt-2 right-0 bg-fuchsia-500 text-white px-3 py-2 rounded border-2 border-fuchsia-600 whitespace-nowrap text-[11px] font-mono z-50 shadow-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <Lightbulb size={12} />
+                    <span>Use The Blueprint (B)</span>
+                  </div>
+                  <div className="absolute bottom-full right-3 w-2 h-2 bg-fuchsia-500 border-t-2 border-l-2 border-fuchsia-600 transform rotate-45"></div>
+                </motion.div>
               )}
-            >
-              <ScanLine size={13} />
-            </button>
+            </div>
 
             <button
               onClick={toggleLang}
-              className="h-8 px-3 border-2 border-ink font-mono text-[10px] uppercase tracking-widest bg-white hover:bg-ink hover:text-white transition-all"
+              className="h-8 px-3 border-2 border-white font-mono text-[10px] uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
 
-            <div className="w-px h-5 bg-ink/20" />
+            <div className="w-px h-5 bg-white/20" />
 
             <div className="flex items-center gap-3">
               <a href="https://github.com/Marvs04" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github size={18} className="cursor-pointer hover:text-accent" />
+                <Github size={18} className="cursor-pointer text-white hover:text-accent" />
               </a>
               <a href="https://linkedin.com/in/marvin-moncada-208033276" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <Linkedin size={18} className="cursor-pointer hover:text-accent" />
+                <Linkedin size={18} className="cursor-pointer text-white hover:text-accent" />
               </a>
               <a href="mailto:marvinfrancisco97@gmail.com" aria-label="Email">
-                <Mail size={18} className="cursor-pointer hover:text-accent" />
+                <Mail size={18} className="cursor-pointer text-white hover:text-accent" />
               </a>
             </div>
           </nav>
 
           {/* Mobile: blueprint + lang + hamburger */}
           <div className="flex items-center gap-1.5 md:hidden">
-            <button
-              onClick={toggleBlueprintMode}
-              data-blueprint-skip
-              aria-label={blueprintMode ? "Exit blueprint mode" : "Enter blueprint mode"}
-              className={cn(
-                "h-8 px-3 border-2 flex items-center justify-center transition-all",
-                blueprintMode
-                  ? "border-fuchsia-500 bg-fuchsia-500 text-white"
-                  : "border-ink bg-white hover:bg-ink hover:text-white"
+            <div className="relative">
+              <button
+                onClick={() => {
+                  toggleBlueprintMode("header");
+                  setShowBlueprintHint(false);
+                }}
+                data-blueprint-skip
+                aria-label={blueprintMode ? "Exit blueprint mode" : "Enter blueprint mode"}
+                className={cn(
+                  "h-8 px-3 border-2 flex items-center justify-center transition-all text-white",
+                  blueprintMode
+                    ? "border-fuchsia-500 bg-fuchsia-500"
+                    : "border-white hover:bg-white hover:text-black"
+                )}
+              >
+                <ScanLine size={14} />
+              </button>
+
+              {/* Hint tooltip on first visit - mobile */}
+              {showBlueprintHint && !blueprintMode && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full mt-2 left-0 bg-fuchsia-500 text-white px-3 py-2 rounded border-2 border-fuchsia-600 whitespace-nowrap text-[11px] font-mono z-50 shadow-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <Lightbulb size={12} />
+                    <span>Use The Blueprint (B)</span>
+                  </div>
+                  <div className="absolute bottom-full left-3 w-2 h-2 bg-fuchsia-500 border-t-2 border-l-2 border-fuchsia-600 transform rotate-45"></div>
+                </motion.div>
               )}
-            >
-              <ScanLine size={14} />
-            </button>
+            </div>
             <button
               onClick={toggleLang}
               data-blueprint-skip
               aria-label={`Switch to ${lang === "en" ? "Spanish" : "English"}`}
-              className="h-8 px-3 border-2 border-ink font-mono text-[10px] uppercase bg-white hover:bg-ink hover:text-white transition-all"
+              className="h-8 px-3 border-2 border-white font-mono text-[10px] uppercase text-white hover:bg-white hover:text-black transition-all"
             >
               {lang === "en" ? "ES" : "EN"}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               data-blueprint-skip
-              className="w-8 h-8 border-2 border-ink flex items-center justify-center bg-white hover:bg-ink hover:text-white transition-all"
+              className="w-8 h-8 border-2 border-white flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
@@ -164,8 +220,8 @@ export const MainLayout: React.FC<Props> = ({
 
         {/* Mobile dropdown */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t-2 border-ink bg-white">
-            <div className="grid grid-cols-4 divide-x divide-ink/20">
+          <nav className="md:hidden border-t-2 border-white" style={{ backgroundColor: "#060606" }}>
+            <div className="grid grid-cols-4 divide-x divide-white/20">
               {NAV_LINKS.map(({ path, label }) => (
                 <Link
                   key={path}
@@ -173,22 +229,22 @@ export const MainLayout: React.FC<Props> = ({
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
                     "py-4 font-mono text-[10px] uppercase tracking-wider transition-colors text-center block",
-                    isActive(path) ? "bg-ink text-paper" : "hover:bg-ink/5"
+                    isActive(path) ? "bg-white text-black" : "text-white hover:bg-white/10"
                   )}
                 >
                   {label}
                 </Link>
               ))}
             </div>
-            <div className="px-6 py-3 border-t border-ink/10 flex items-center gap-5">
+            <div className="px-6 py-3 border-t border-white/10 flex items-center gap-5">
               <a href="https://github.com/Marvs04" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github size={16} className="opacity-50 hover:opacity-100 hover:text-accent transition-all" />
+                <Github size={16} className="text-white/50 hover:text-white hover:text-accent transition-all" />
               </a>
               <a href="https://linkedin.com/in/marvin-moncada-208033276" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <Linkedin size={16} className="opacity-50 hover:opacity-100 hover:text-accent transition-all" />
+                <Linkedin size={16} className="text-white/50 hover:text-white hover:text-accent transition-all" />
               </a>
               <a href="mailto:marvinfrancisco97@gmail.com" aria-label="Email">
-                <Mail size={16} className="opacity-50 hover:opacity-100 hover:text-accent transition-all" />
+                <Mail size={16} className="text-white/50 hover:text-white hover:text-accent transition-all" />
               </a>
             </div>
           </nav>

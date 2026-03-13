@@ -11,7 +11,7 @@ export const PhilosophyOverlay: React.FC = () => {
     <div className="space-y-12" data-blueprint="organism:philosophy-panel" data-blueprint-id="philosophy-panel" data-blueprint-logic="Rendered inside DUCPage accordion — showPhilosophy state">
       <header>
         <span className="text-xs font-mono uppercase tracking-[0.3em] text-accent mb-4 block">{t.philosophyTag}</span>
-        <h2 className="font-mono font-bold tracking-tighter uppercase leading-[0.85]" style={{ fontSize: "clamp(2rem,5vw,4rem)" }}>
+        <h2 className="font-mono font-bold tracking-tighter uppercase leading-[0.85] text-2xl md:text-3xl lg:text-5xl">
           {t.philosophyTitle.split("\n").map((line, i) => (
             <React.Fragment key={i}>{line}{i < 2 && <br />}</React.Fragment>
           ))}
@@ -25,21 +25,21 @@ export const PhilosophyOverlay: React.FC = () => {
         </div>
         <div className="space-y-8">
           <div className="flex gap-4">
-            <Target className="flex-shrink-0 text-accent" size={24} />
+            <Target className="flex-shrink-0 text-accent w-5 h-5 md:w-6 md:h-6" />
             <div>
               <h4 className="font-mono font-bold uppercase text-[11px] tracking-[0.15em] mb-1">{t.philosophyP1Title}</h4>
               <p className="font-mono text-[10px] opacity-50 leading-relaxed">{t.philosophyP1Desc}</p>
             </div>
           </div>
           <div className="flex gap-4">
-            <Zap className="flex-shrink-0 text-accent" size={24} />
+            <Zap className="flex-shrink-0 text-accent w-5 h-5 md:w-6 md:h-6" />
             <div>
               <h4 className="font-mono font-bold uppercase text-[11px] tracking-[0.15em] mb-1">{t.philosophyP2Title}</h4>
               <p className="font-mono text-[10px] opacity-50 leading-relaxed">{t.philosophyP2Desc}</p>
             </div>
           </div>
           <div className="flex gap-4">
-            <ShieldCheck className="flex-shrink-0 text-accent" size={24} />
+            <ShieldCheck className="flex-shrink-0 text-accent w-5 h-5 md:w-6 md:h-6" />
             <div>
               <h4 className="font-mono font-bold uppercase text-[11px] tracking-[0.15em] mb-1">{t.philosophyP3Title}</h4>
               <p className="font-mono text-[10px] opacity-50 leading-relaxed">{t.philosophyP3Desc}</p>

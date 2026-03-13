@@ -48,7 +48,7 @@ export const ReadmePage: React.FC = () => {
     >
       {/* ── Dark page header ── */}
       <section
-        className="border-b-4 border-ink px-8 md:px-14 py-10 md:py-14"
+        className="border-b-4 border-ink px-8 md:px-14 py-12 md:py-16"
         style={{ backgroundColor: "#060606" }}
         data-blueprint="organism:page-header"
         data-blueprint-id="readme-page-header"
@@ -61,7 +61,7 @@ export const ReadmePage: React.FC = () => {
           data-blueprint-id="readme-back-link"
           data-blueprint-logic="Link → /projects"
         >
-          <ArrowLeft size={11} />
+          <ArrowLeft size={16} />
           {isES ? "Proyectos" : "Projects"}
         </Link>
 
@@ -71,8 +71,7 @@ export const ReadmePage: React.FC = () => {
               {isES ? "01 / Proyectos / Readme" : "01 / Projects / Readme"}
             </p>
             <h1
-              className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white"
-              style={{ fontSize: "clamp(2.4rem, 6vw, 5rem)" }}
+              className="font-mono font-bold uppercase tracking-tighter leading-[0.9] text-white text-4xl md:text-5xl lg:text-6xl\"
               data-blueprint="atom:page-title"
               data-blueprint-id="readme-page-title"
               data-blueprint-logic="Dynamic — project.title from useParams(:id)"
@@ -90,12 +89,12 @@ export const ReadmePage: React.FC = () => {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border border-white/20 px-4 py-2.5 text-white/50 hover:text-white hover:border-white/50 transition-colors"
+                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border border-white/20 px-4 py-2 text-white/50 hover:text-white hover:border-white/50 transition-colors"
                 data-blueprint="atom:github-link"
                 data-blueprint-id="readme-github-link"
                 data-blueprint-logic="Conditional — renders only if project.githubUrl exists"
               >
-                <Github size={11} />
+                <Github size={16} />
                 {isES ? "Código" : "Source"}
               </a>
             )}
@@ -104,11 +103,11 @@ export const ReadmePage: React.FC = () => {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border px-4 py-2.5 transition-colors"
+                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border px-4 py-2 transition-colors"
                 style={{ borderColor: APPLE_BLUE, color: APPLE_BLUE }}
                 data-blueprint="atom:live-link"
               >
-                <ExternalLink size={11} />
+                <ExternalLink size={16} />
                 Live
               </a>
             )}
@@ -121,7 +120,7 @@ export const ReadmePage: React.FC = () => {
 
         {/* Sticky sidebar */}
         <aside
-          className="hidden lg:flex flex-col w-64 shrink-0 border-r-4 border-ink bg-paper sticky top-14 h-[calc(100vh-56px)] overflow-y-auto"
+          className="hidden lg:flex flex-col w-48 xl:w-64 shrink-0 border-r-4 border-ink bg-paper sticky top-14 h-[calc(100vh-56px)] overflow-y-auto"
           data-blueprint="molecule:readme-sidebar"
           data-blueprint-id="readme-sidebar"
         >
@@ -132,7 +131,7 @@ export const ReadmePage: React.FC = () => {
               to="/projects"
               className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-ink/35 hover:text-accent transition-colors"
             >
-              <ArrowLeft size={11} />
+              <ArrowLeft size={16} />
               {isES ? "Proyectos" : "Projects"}
             </Link>
 
@@ -212,12 +211,12 @@ export const ReadmePage: React.FC = () => {
                   <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/30">
                     {isES ? "Secciones" : "Sections"}
                   </p>
-                  <ul className="space-y-0.5">
+                  <ul className="space-y-1">
                     {toc.map(({ id: sectionId, text }) => (
                       <li key={sectionId}>
                         <button
                           onClick={() => scrollTo(sectionId)}
-                          className="w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] text-ink/35 hover:text-accent transition-colors py-1.5 leading-snug"
+                          className="w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] text-ink/35 hover:text-accent transition-colors py-2 leading-snug"
                           data-blueprint="atom:toc-link"
                           data-blueprint-logic={`onClick: scrollTo('${sectionId}')`}
                         >

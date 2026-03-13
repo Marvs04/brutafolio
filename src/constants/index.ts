@@ -4,6 +4,11 @@ import acnrReadme from "../content/acnr.md?raw";
 import sendaReadme from "../content/senda.md?raw";
 import portfolioReadme from "../content/portfolio.md?raw";
 
+// Local Storage Keys
+export const STORAGE_KEYS = {
+  BLUEPRINT_HINT_SEEN: "blueprint_hint_seen",
+} as const;
+
 export const INITIAL_CONSTRAINTS: Constraints = {
   teamSize: TeamSize.SMALL,
   budget: Budget.VENTURE,

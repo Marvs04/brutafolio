@@ -81,15 +81,16 @@ function Tooltip({ node, mouseX, mouseY }: { node: BlueprintNode; mouseX: number
         left,
         zIndex: 10200,
         backgroundColor: C.tooltipBg,
-        border: `1px solid ${accentColor}`,
+        border: `2px solid ${accentColor}`,
         color: C.tooltipText,
         fontFamily: FONT,
         fontSize: "10px",
-        padding: "10px 14px",
+        padding: "12px 16px",
         width: `${TOOLTIP_W}px`,
         pointerEvents: "none",
         lineHeight: "1.75",
-        boxShadow: `3px 3px 0 ${accentColor}`,
+        boxShadow: `0 0 0 1px ${accentColor}, 4px 4px 12px rgba(0,0,0,0.6)`,
+        backdropFilter: "blur(2px)",
       }}
     >
       {/* Identity */}

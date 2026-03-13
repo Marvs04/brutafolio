@@ -1,4 +1,4 @@
-import { Constraints, Project, Scale } from "../types";
+import { Constraints, Project, Scale, Budget } from "../types";
 import { PROJECTS } from "../constants";
 
 export const projectService = {
@@ -14,7 +14,7 @@ export const projectService = {
       if (constraints.scale === Scale.GLOBAL && project.techStack.includes("AWS")) score += 30;
       
       // Tech stack matches
-      if (project.techStack.includes("Supabase") && constraints.budget === "bootstrapped") score += 20;
+      if (project.techStack.includes("Supabase") && constraints.budget === Budget.BOOTSTRAPPED) score += 20;
       
       return { ...project, relevanceScore: score };
     }).sort((a, b) => b.relevanceScore - a.relevanceScore);
