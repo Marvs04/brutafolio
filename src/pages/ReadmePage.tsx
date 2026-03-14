@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useCallback } from "react";
+import React, { useMemo, useRef, useCallback, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -23,14 +23,45 @@ export const ReadmePage: React.FC = () => {
   const wordCount = useMemo(() => project?.readme?.split(/\s+/).length ?? 0, [project?.readme]);
   const readingTime = Math.max(1, Math.round(wordCount / 200));
 
+  const [activeSection, setActiveSection] = useState<string>("");
+
   const scrollTo = useCallback((sectionId: string) => {
     const el = contentRef.current?.querySelector(`[data-section="${sectionId}"]`);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
+  // ── Track scroll position for active section highlighting ──
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const handleScroll = () => {
+      const sections = contentRef.current?.querySelectorAll("[data-section]");
+      if (!sections) return;
+
+      // Find which section is currently in view
+      let currentSection = "";
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 100) {
+          currentSection = section.getAttribute("data-section") || "";
+        }
+      });
+
+      setActiveSection(currentSection);
+    };
+
+    contentRef.current?.addEventListener("scroll", handleScroll);
+    contentRef.current?.parentElement?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      contentRef.current?.removeEventListener("scroll", handleScroll);
+      contentRef.current?.parentElement?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (!project || !project.readme) {
     return (
-      <div className="p-12 font-mono text-sm text-ink/40">
+      <div className="p-12 font-mono text-sm text-ink/70">
         {isES ? "Proyecto no encontrado." : "Project not found."}{" "}
         <Link to="/projects" className="text-accent underline underline-offset-2">
           ← {isES ? "Proyectos" : "Projects"}
@@ -56,7 +87,7 @@ export const ReadmePage: React.FC = () => {
       >
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-white/25 hover:text-white/60 transition-colors mb-8"
+          className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 hover:text-white transition-colors mb-8"
           data-blueprint="atom:back-link"
           data-blueprint-id="readme-back-link"
           data-blueprint-logic="Link → /projects"
@@ -67,7 +98,7 @@ export const ReadmePage: React.FC = () => {
 
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25 mb-3">
+            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 mb-3">
               {isES ? "01 / Proyectos / Readme" : "01 / Projects / Readme"}
             </p>
             <h1
@@ -78,7 +109,7 @@ export const ReadmePage: React.FC = () => {
             >
               {project.title}_
             </h1>
-            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/20 mt-5">
+            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/70 mt-5">
               ~{readingTime} {isES ? "min de lectura" : "min read"} · {wordCount.toLocaleString()} {isES ? "palabras" : "words"}
             </p>
           </div>
@@ -89,7 +120,7 @@ export const ReadmePage: React.FC = () => {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border border-white/20 px-4 py-2 text-white/50 hover:text-white hover:border-white/50 transition-colors"
+                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border border-white/70 px-4 py-2 text-white/70 hover:text-white hover:border-white transition-colors"
                 data-blueprint="atom:github-link"
                 data-blueprint-id="readme-github-link"
                 data-blueprint-logic="Conditional — renders only if project.githubUrl exists"
@@ -129,7 +160,7 @@ export const ReadmePage: React.FC = () => {
             {/* Back button */}
             <Link
               to="/projects"
-              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-ink/35 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70 hover:text-accent transition-colors"
             >
               <ArrowLeft size={16} />
               {isES ? "Proyectos" : "Projects"}
@@ -143,23 +174,29 @@ export const ReadmePage: React.FC = () => {
               data-blueprint="molecule:project-meta"
               data-blueprint-id="readme-meta"
             >
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/30">
+              <button
+                onClick={() => {
+                  const firstSection = contentRef.current?.querySelector("[data-section]");
+                  if (firstSection) firstSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70 hover:text-accent transition-colors cursor-pointer font-semibold"
+              >
                 Info
-              </p>
+              </button>
               <div className="space-y-3">
                 {([
                   { label: isES ? "Año" : "Year", value: project.year },
                   { label: isES ? "Rol" : "Role", value: project.teamRole.toUpperCase() },
                 ] as { label: string; value: string }[]).map(({ label, value }) => (
                   <div key={label} className="flex justify-between items-center">
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-ink/30">
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-ink/70">
                       {label}
                     </span>
                     <span className="font-mono text-[9px] font-bold text-ink">{value}</span>
                   </div>
                 ))}
                 <div className="flex justify-between items-center">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-ink/30">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-ink/70">
                     Status
                   </span>
                   <span
@@ -184,14 +221,33 @@ export const ReadmePage: React.FC = () => {
               data-blueprint="molecule:tech-stack"
               data-blueprint-id="readme-stack"
             >
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/30">
+              <button
+                onClick={() => {
+                  // Try to find a Stack section in the content
+                  const stackSection = contentRef.current?.querySelector('[data-section="stack"], [data-section="Stack"], [data-section="STACK"], [data-section="tech"], [data-section="Tech"]');
+                  if (stackSection) {
+                    stackSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                  } else {
+                    // Fallback: scroll to first h2 that might contain "Stack"
+                    const allSections = contentRef.current?.querySelectorAll("[data-section]");
+                    if (allSections && allSections.length > 0) {
+                      const stackMatch = Array.from(allSections).find(el => 
+                        el.textContent?.toLowerCase().includes("stack") || 
+                        el.getAttribute("data-section")?.toLowerCase().includes("stack")
+                      );
+                      if (stackMatch) stackMatch.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                  }
+                }}
+                className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70 hover:text-accent transition-colors cursor-pointer font-semibold"
+              >
                 Stack
-              </p>
+              </button>
               <div className="flex flex-col gap-1.5">
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
-                    className="font-mono text-[9px] uppercase tracking-wider text-ink/55"
+                    className="font-mono text-[9px] uppercase tracking-wider text-ink/70"
                   >
                     · {tech}
                   </span>
@@ -208,22 +264,29 @@ export const ReadmePage: React.FC = () => {
                   data-blueprint="molecule:toc"
                   data-blueprint-id="readme-toc"
                 >
-                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/30">
+                  <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70">
                     {isES ? "Secciones" : "Sections"}
                   </p>
                   <ul className="space-y-1">
-                    {toc.map(({ id: sectionId, text }) => (
-                      <li key={sectionId}>
-                        <button
-                          onClick={() => scrollTo(sectionId)}
-                          className="w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] text-ink/35 hover:text-accent transition-colors py-2 leading-snug"
-                          data-blueprint="atom:toc-link"
-                          data-blueprint-logic={`onClick: scrollTo('${sectionId}')`}
-                        >
-                          {text}
-                        </button>
-                      </li>
-                    ))}
+                    {toc.map(({ id: sectionId, text }) => {
+                      const isActive = activeSection === sectionId;
+                      return (
+                        <li key={sectionId}>
+                          <button
+                            onClick={() => scrollTo(sectionId)}
+                            className={`w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] py-2 leading-snug transition-all pl-2 border-l-2 ${ 
+                              isActive 
+                                ? "border-accent text-accent font-bold" 
+                                : "border-transparent text-ink/70 hover:text-accent"
+                            }`}
+                            data-blueprint="atom:toc-link"
+                            data-blueprint-logic={`onClick: scrollTo('${sectionId}') — active: ${isActive}`}
+                          >
+                            {text}
+                          </button>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </>
@@ -234,12 +297,12 @@ export const ReadmePage: React.FC = () => {
 
         {/* Markdown content */}
         <div
-          className="flex-1 px-8 md:px-14 lg:px-16 py-12 md:py-16"
+          className="flex-1 px-8 md:px-16 lg:px-20 py-16 md:py-20 lg:py-24"
           data-blueprint="molecule:readme-content"
           data-blueprint-id="readme-body"
           data-blueprint-logic="ReactMarkdown with buildComponents() — GFM enabled"
         >
-          <div ref={contentRef} className="max-w-2xl">
+          <div ref={contentRef} className="max-w-3xl">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
               {project.readme}
             </ReactMarkdown>

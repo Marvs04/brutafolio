@@ -68,7 +68,7 @@ export const DUCPage: React.FC = () => {
         data-blueprint-logic="Static page identity — dark header strip"
       >
         <p
-          className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25 mb-4"
+          className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 mb-4"
           data-blueprint="atom:page-label"
           data-blueprint-id="duc-label"
           data-blueprint-logic="Static breadcrumb"
@@ -84,7 +84,7 @@ export const DUCPage: React.FC = () => {
           {isES ? <>DESARROLLADOR<br />BAJO <span style={{ color: "#007AFF" }}>RESTRICCIONES_</span></> : <>DEVELOPER<br />UNDER <span style={{ color: "#007AFF" }}>CONSTRAINTS_</span></>}
         </h1>
         <p
-          className="font-mono text-[10px] text-white/20 uppercase tracking-[0.2em] mt-6"
+          className="font-mono text-[10px] text-white/70 uppercase tracking-[0.2em] mt-6"
           data-blueprint="atom:page-subtitle"
           data-blueprint-id="duc-subtitle"
           data-blueprint-logic="Static instruction copy — bilingual"

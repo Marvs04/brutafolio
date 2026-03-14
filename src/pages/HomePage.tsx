@@ -1,58 +1,61 @@
-﻿import React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ScanLine } from "lucide-react";
+import { ArrowRight, ScanLine, Terminal, X, Mail, Linkedin, Github } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 import { useBlueprint } from "../context/BlueprintContext";
+import { TechMosaic } from "../components/TechMosaic";
 
 const APPLE_BLUE = "#007AFF";
 const INK        = "#1D1D1F";
 const PAPER      = "#F5F5F7";
 
-const TICKER = [
-  "React 19", "TypeScript", "Next.js", "JavaScript", "Supabase", "Python", "Astro",
-  "Tailwind CSS", "PostgreSQL", "Docker", "Azure", "Vitest", "Vite", "Express",
-  "HTML5", "CSS3",
-];
+const CONTACT_INFO = {
+  email: "marvinfrancisco97@gmail.com",
+  linkedin: "https://linkedin.com/in/marvin-moncada-208033276",
+  github: "https://github.com/Marvs04",
+};
 
 export const HomePage: React.FC = () => {
   const { lang } = useLanguage();
   const isES = lang === "es";
   const { blueprintMode, toggleBlueprintMode } = useBlueprint();
   const [imageError, setImageError] = React.useState(false);
+  const [showContact, setShowContact] = React.useState(false);
 
   return (
     <div
       className="w-full"
       data-blueprint="organism:home-page"
       data-blueprint-id="home-page"
-      data-blueprint-logic="HomePage  neobrutalist v5"
+      data-blueprint-logic="HomePage neobrutalist v6"
     >
 
-      {/*  HERO  */}
+      {/* ── HERO ── */}
       <section
+        aria-label="Hero"
         className="flex flex-col border-b-4 border-ink"
         style={{ minHeight: "calc(100vh - 56px)", backgroundColor: "#060606" }}
         data-blueprint="organism:hero"
         data-blueprint-id="hero"
-        data-blueprint-logic="Full-viewport hero: portrait left, nav cards right, marquee ticker bottom"
       >
         <div className="flex-grow grid grid-cols-1 lg:grid-cols-12 min-h-0">
 
-          {/* LEFT  name + portrait */}
+          {/* LEFT — name + portrait */}
           <div
             className="lg:col-span-6 flex flex-col overflow-hidden"
             data-blueprint="molecule:hero-portrait"
             data-blueprint-id="hero-portrait"
-            data-blueprint-logic="Static: name label + portrait image, stacked vertically"
           >
             <div
               className="flex-1 flex flex-col justify-end px-8 py-8"
               style={{ backgroundColor: "#060606" }}
               data-blueprint="atom:hero-name"
               data-blueprint-id="hero-name"
-              data-blueprint-logic="Static identity block — MARVIN / MONCADA in font-mono bold"
             >
-              <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 mb-3">
+              {/* Role label — AAA contrast on #060606 */}
+              <p
+                className="font-mono text-xs uppercase tracking-[0.3em] mb-3 text-white/70"
+              >
                 {isES ? "Desarrollador" : "Developer"}
               </p>
               <p
@@ -61,61 +64,69 @@ export const HomePage: React.FC = () => {
                 MARVIN<br />
                 <span style={{ color: APPLE_BLUE }}>MONCADA</span>
               </p>
+              {/* Junior tag — close to name, no "2026" */}
+              <p
+                className="font-mono text-sm uppercase tracking-[0.2em] mt-4 text-white/70"
+              >
+                {isES ? "Desarrollador Junior · Costa Rica" : "Junior Developer · Costa Rica"}
+              </p>
             </div>
             <img
               src="/portfolio-portrait.png"
-              alt="Marvin Moncada"
+              alt="Marvin Moncada — Junior Developer"
               width={1376}
               height={752}
               className="w-full h-auto block bg-white/5"
               loading="eager"
-              fetchPriority="high"
               onError={() => setImageError(true)}
               style={{ display: imageError ? "none" : "block" }}
               data-blueprint="atom:portrait"
               data-blueprint-id="portrait"
-              data-blueprint-logic="Static asset — /portfolio-portrait.png, w-full h-auto (no crop)"
             />
             {imageError && (
-              <div className="w-full h-full bg-white/5 flex items-center justify-center">
-                <p className="font-mono text-[9px] text-white/30">Portrait unavailable</p>
+              <div className="w-full h-64 bg-white/5 flex items-center justify-center">
+                <p className="font-mono text-xs text-white/60">Portrait unavailable</p>
               </div>
             )}
           </div>
 
-          {/* RIGHT  navigation cards */}
+          {/* RIGHT — navigation cards */}
           <div
             className="lg:col-span-6 flex flex-col border-t-2 lg:border-t-0"
             style={{ backgroundColor: "#060606" }}
             data-blueprint="molecule:hero-nav"
             data-blueprint-id="hero-nav"
-            data-blueprint-logic="Static nav: 3 route cards → /projects, /cv, /duc"
           >
             {/* Available badge */}
-            <div
-              className="px-8 py-5 border-b border-white/8 flex items-center gap-2 shrink-0"
+            <button
+              onClick={() => setShowContact(!showContact)}
+              className="w-full text-left px-8 py-5 border-b border-white/10 flex items-center gap-3 shrink-0 hover:bg-white/5 transition-colors cursor-pointer group"
               data-blueprint="atom:badge"
               data-blueprint-id="available-badge"
-              data-blueprint-logic="Hardcoded availability status — green pulse + label"
+              aria-label={isES ? "Ver contacto" : "Show contact"}
+              aria-pressed={showContact}
             >
               <span
-                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                className="w-2 h-2 rounded-full animate-pulse shrink-0"
                 style={{ backgroundColor: "#30D158" }}
+                aria-hidden="true"
               />
               <span
-                className="font-mono text-[9px] uppercase tracking-[0.25em]"
+                className="font-mono text-[11px] uppercase tracking-[0.2em] leading-snug group-hover:text-white/90 transition-colors"
                 style={{ color: "#30D158" }}
               >
-                {isES ? "Disponible" : "Available"}
+                {isES
+                  ? "Disponible para proyectos freelance y roles full-time"
+                  : "Available for freelance & full-time roles"}
               </span>
-            </div>
+            </button>
 
-            {/* Nav cards  fill remaining height equally */}
-            <div
+            {/* Nav cards */}
+            <nav
               className="flex flex-col flex-1"
+              aria-label={isES ? "Secciones" : "Page sections"}
               data-blueprint="molecule:nav-cards"
               data-blueprint-id="nav-cards"
-              data-blueprint-logic="Static array map → 3 Link cards, flex-1 equal height"
             >
               {(
                 [
@@ -123,7 +134,7 @@ export const HomePage: React.FC = () => {
                     to: "/projects",
                     num: "01",
                     label: isES ? "Proyectos" : "Projects",
-                    sub: isES ? "Trabajo enviado" : "Shipped work",
+                    sub: isES ? "Trabajo enviado a producción" : "Shipped work in production",
                   },
                   {
                     to: "/cv",
@@ -132,274 +143,366 @@ export const HomePage: React.FC = () => {
                     sub: isES ? "Currículum completo" : "Full résumé",
                   },
                   {
-                    to: "/duc",
+                    to: "/fundamentals",
                     num: "03",
-                    label: "D.U.C.",
-                    sub: isES ? "Motor de arquitectura" : "Architecture engine",
+                    label: isES ? "Fundamentos" : "Fundamentals",
+                    sub: isES ? "Decisiones de arquitectura" : "Architecture decisions",
                   },
                 ] as { to: string; num: string; label: string; sub: string }[]
               ).map(({ to, num, label, sub }) => (
                 <Link
                   key={to}
                   to={to}
-                  className="group flex-1 flex items-center justify-between px-8 py-8 border-b border-white/8 hover:bg-white/[0.04] transition-colors"
-                  data-blueprint={`atom:nav-card`}
-                  data-blueprint-id={`nav-card-${to.replace('/', '') || 'home'}`}
-                  data-blueprint-logic={`Link → ${to}`}
+                  aria-label={label}
+                  className="group flex-1 flex items-center justify-between px-8 py-8 border-b border-white/10 hover:bg-white/[0.05] transition-colors"
+                  data-blueprint="atom:nav-card"
+                  data-blueprint-id={`nav-card-${to.replace("/", "") || "home"}`}
                 >
                   <div>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 mb-2 group-hover:text-white/35 transition-colors">
+                    <p
+                      className="font-mono text-[10px] uppercase tracking-[0.3em] mb-2 text-white/70 group-hover:text-white transition-colors"
+                    >
                       {num}
                     </p>
-                    <p
-                      className="font-mono font-bold uppercase tracking-tighter text-white/70 group-hover:text-white transition-colors text-2xl md:text-3xl"
-                    >
+                    <p className="font-mono font-bold uppercase tracking-tighter text-white/90 group-hover:text-white transition-colors text-2xl md:text-3xl">
                       {label}
                     </p>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/20 mt-1.5 group-hover:text-white/40 transition-colors">
+                    <p
+                      className="font-mono text-[10px] uppercase tracking-[0.2em] mt-1.5 text-white/70 group-hover:text-white/90 transition-colors"
+                    >
                       {sub}
                     </p>
                   </div>
                   <ArrowRight
                     size={16}
-                    className="text-white/20 group-hover:text-white/50 group-hover:translate-x-1 transition-all shrink-0"
+                    className="text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all shrink-0"
+                    aria-hidden="true"
                   />
                 </Link>
               ))}
-            </div>
-
-            {/* Footer  identity label */}
-            <div
-              className="px-8 py-5 shrink-0"
-              data-blueprint="atom:identity-label"
-              data-blueprint-id="hero-identity-label"
-              data-blueprint-logic="Static footer label — role · location · year"
-            >
-              <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/12">
-                {isES ? "Desarrollador Junior · Costa Rica · 2026" : "Junior Developer · Costa Rica · 2026"}
-              </p>
-            </div>
+            </nav>
           </div>
 
-        </div>
-
-        {/* Marquee ticker */}
-        <div
-          className="border-t-2 border-white/8 overflow-hidden py-3 shrink-0"
-          data-blueprint="atom:marquee"
-          data-blueprint-id="tech-marquee"
-          data-blueprint-logic="TICKER × 3, CSS animation: marquee 30s linear infinite"
-        >
-          <div
-            className="flex whitespace-nowrap w-max"
-            style={{ animation: "marquee 30s linear infinite" }}
-          >
-            {[...TICKER, ...TICKER, ...TICKER].map((tech, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center font-mono text-[9px] uppercase tracking-[0.25em] text-white/15 px-8"
-              >
-                {tech}
-                <span className="ml-8 text-white/8">·</span>
-              </span>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/*  STATS STRIP  */}
+      {/* ── STATS STRIP ── */}
       <section
         className="bg-white border-b-4 border-ink"
+        aria-label={isES ? "Métricas" : "Metrics"}
         data-blueprint="organism:stats"
         data-blueprint-id="stats"
-        data-blueprint-logic="Static metrics — 4 cells, hardcoded values"
       >
         <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-ink">
           {[
-            { n: "05", l: isES ? "Proyectos" : "Projects" },
-            { n: "2+", l: isES ? "Años" : "Years" },
-            { n: "04", l: isES ? "Lenguajes" : "Languages" },
-            { n: "3",  l: isES ? "En producción" : "In production" },
-          ].map(({ n, l }) => (
-            <div
+            { n: "05", l: isES ? "Proyectos" : "Real World Projects", href: "/projects" },
+            { n: "2+", l: isES ? "Años de Exp." : "Years of Exp.", href: "/cv" },
+            { n: "04", l: isES ? "Tech Core" : "Core Technologies", href: "/projects" },
+            { n: "3",  l: isES ? "En producción" : "In production", href: "/projects" },
+          ].map(({ n, l, href }) => (
+            <Link
               key={l}
-              className="px-8 py-10"
+              to={href}
+              className="px-8 py-10 hover:bg-ink/5 transition-colors group cursor-pointer"
               data-blueprint="atom:stat-cell"
               data-blueprint-id={`stat-${n}`}
-              data-blueprint-logic={`Static: ${n} / ${l}`}
+              aria-label={`${n} ${l} - Click to view`}
             >
               <div
-                className="font-mono font-bold tracking-tighter leading-none mb-2 text-3xl md:text-4xl lg:text-5xl"
+                className="font-mono font-bold tracking-tighter leading-none mb-3 text-4xl md:text-5xl lg:text-6xl transition-colors"
                 style={{ color: INK }}
+                onMouseEnter={e => (e.currentTarget.style.color = APPLE_BLUE)}
+                onMouseLeave={e => (e.currentTarget.style.color = INK)}
               >
                 {n}
               </div>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-ink/35">{l}</div>
-            </div>
+              <div className="font-mono text-[11px] uppercase tracking-wider text-ink/70">
+                {l}
+              </div>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/*  ABOUT  */}
+      {/* ── ABOUT ── */}
       <section
         className="border-b-4 border-ink"
         style={{ backgroundColor: PAPER }}
+        aria-label={isES ? "Sobre mí" : "About me"}
         data-blueprint="organism:about"
         data-blueprint-id="about"
-        data-blueprint-logic="Static: bio copy (bilingual) + stack chip list"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ width: 953 * 2 + 'px', height: '584px' }}>
+
           {/* Bio */}
           <div
-            className="border-b-2 lg:border-b-0 lg:border-r-2 border-ink px-8 md:px-12 py-14 space-y-5"
+            className="flex flex-col h-full border-b-2 lg:border-b-0 lg:border-r-2 border-ink px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8"
+            style={{ width: '953px', height: '584px' }}
             data-blueprint="molecule:about-bio"
             data-blueprint-id="about-bio"
-            data-blueprint-logic="Bilingual bio paragraphs — isES conditional"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/30">
+            <p
+              className="font-mono text-[11px] uppercase tracking-[0.25em] mb-8 text-ink/70 font-semibold"
+            >
               {isES ? "Sobre mí" : "About"}
             </p>
-            <p className="font-mono text-sm leading-relaxed text-ink/60 max-w-md tracking-tight">
+            <p className="font-mono text-base leading-[1.8] max-w-lg tracking-tight text-ink/85">
               {isES
-                ? "Desarrollador basado en Costa Rica. Construyo plataformas multi-rol, pipelines de datos y sitios de alto rendimiento  dentro de presupuestos y plazos reales."
-                : "Developer based in Costa Rica. Multi-role platforms, data pipelines, and high-performance sites  within real budgets and timelines."}
+                ? "Pienso en arquitectura antes que en tecnología. Flujo de datos, patrones request/response, patrones—los fundamentos que importan."
+                : "I think architecture before technology. Data flows, request/response patterns, design patterns—the fundamentals that matter."}
             </p>
-            <p className="font-mono text-xs leading-relaxed text-ink/30 max-w-md tracking-tight">
+            <p className="font-mono text-sm leading-[1.7] max-w-lg tracking-tight text-ink/80">
               {isES
-                ? "TypeScript estricto, pruebas unitarias, arquitectura que escala sin acumular deuda técnica."
-                : "TypeScript strict mode, unit testing, architecture that scales without accumulating technical debt."}
-            </p>
-            <p className="font-mono text-[9px] uppercase tracking-widest text-ink/20 border-t border-ink/10 pt-5">
-              Junior Developer · Costa Rica
+                ? "Pienso en sistemas, no en features. Problemas primero, soluciones segundo. —entender antes de construir."
+                : "I think in systems, not features. Problems first, solutions second. —understanding before building."}
             </p>
           </div>
-          {/* Stack chips */}
+
+          {/* Tech Mosaic */}
           <div
-            className="bg-white px-8 md:px-12 py-14"
+            className="flex flex-col h-full px-8 md:px-14 lg:px-16 py-16 md:py-20"
+            style={{ width: '953px', height: '584px' }}
             data-blueprint="molecule:about-stack"
             data-blueprint-id="about-stack"
-            data-blueprint-logic="Static STACK[] → chip list, 16 techs"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-ink/30 mb-6">
-              {isES ? "Tecnologías" : "Stack"}
+            <p
+              className="font-mono text-[11px] uppercase tracking-[0.25em] mb-6 text-ink/70 font-semibold"
+            >
+              {isES ? "Stack" : "Stack"}
             </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "React 19", "TypeScript", "Next.js", "JavaScript", "HTML5", "CSS3",
-                "Python", "Astro", "Supabase",
-                "Express", "PostgreSQL", "Docker", "Tailwind CSS", "Azure", "Vitest", "Vite",
-              ].map(t => (
-                <span
-                  key={t}
-                  className="font-mono text-[10px] border-2 border-ink/15 px-3 py-1.5 uppercase tracking-wider text-ink/45 hover:border-ink hover:text-ink transition-all cursor-default"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
+            <TechMosaic clickable={true} />
           </div>
+
         </div>
       </section>
 
-      {/*  STATEMENT  */}
-      <section
-        className="border-b-4 border-ink px-8 md:px-12 py-16 md:py-24"
-        style={{ backgroundColor: APPLE_BLUE }}
-        data-blueprint="organism:statement"
-        data-blueprint-id="statement"
-        data-blueprint-logic="Brand statement — DUC philosophy hook, Apple Blue bg"
-      >
-        <p
-          className="font-mono font-bold uppercase tracking-tighter text-white leading-[0.88] text-5xl md:text-6xl lg:text-7xl"
-          data-blueprint="atom:statement-text"
-          data-blueprint-id="statement-text"
-          data-blueprint-logic="Static: CONSTRAINTS ARE THE BRIEF. — bilingual"
-        >
-          {isES ? "LAS RESTRICCIONES\nSON EL BRIEF." : "CONSTRAINTS\nARE THE BRIEF."}
-        </p>
-        <div className="mt-8 flex items-center gap-6">
-          <div className="w-10 h-0.5 bg-white/40" />
-          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/50">
-            {isES ? "Filosofía  Developer Under Constraints" : "Philosophy  Developer Under Constraints"}
-          </p>
-        </div>
-      </section>
-
-      {/*  BLUEPRINT CTA  */}
+      {/* ── THINK + BLUEPRINT ── */}
       <section
         className="border-b-4 border-ink"
         style={{ backgroundColor: "#060606" }}
-        data-blueprint="organism:blueprint-cta"
-        data-blueprint-id="blueprint-cta"
-        data-blueprint-logic="onClick: toggleBlueprintMode() — activates BlueprintOverlay globally via context"
+        aria-label={isES ? "Cómo pienso y herramientas" : "How I think and tools"}
+        data-blueprint="organism:think-blueprint"
+        data-blueprint-id="think-blueprint"
       >
-        <div className="px-8 md:px-16 py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10 min-h-[320px]">
-          <div className="max-w-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-4">
-              Blueprint Mode
-            </p>
-            <h2 className="font-mono font-bold text-3xl md:text-4xl uppercase tracking-tighter text-white leading-tight">
-              {isES
-                ? "X-Ray del UI. Cada decisión de diseño, hecha visible."
-                : "X-Ray your UI. Every design decision, made visible."}
-            </h2>
-          </div>
-          <button
-            onClick={toggleBlueprintMode}
-            className="shrink-0 inline-flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-wider border-2 px-8 py-4 min-w-[260px] transition-all hover:translate-x-[3px] hover:translate-y-[3px] group"
-            style={{
-              borderColor: "#E879F9",
-              color: blueprintMode ? "#060606" : "#E879F9",
-              backgroundColor: blueprintMode ? "#E879F9" : "transparent",
-              boxShadow: "4px 4px 0px 0px #E879F9",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.boxShadow = "none")}
-            onMouseLeave={e => (e.currentTarget.style.boxShadow = "4px 4px 0px 0px #E879F9")}
-            data-blueprint="atom:blueprint-cta-btn"
-            data-blueprint-id="blueprint-cta-btn"
-            data-blueprint-logic="onClick: toggleBlueprintMode() — or press B anywhere"
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ width: 953 * 2 + 'px', height: '584px' }}>
+          {/* LEFT — How I Think */}
+          <div
+            className="border-b-2 lg:border-b-0 lg:border-r-2 border-white/10 px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8 h-full"
+            style={{ width: '953px', height: '584px' }}
+            data-blueprint="molecule:think-section"
+            data-blueprint-id="think-section"
           >
-            <ScanLine size={13} className="group-hover:rotate-12 transition-transform" />
-            {blueprintMode
-              ? (isES ? "Desactivar Blueprint" : "Deactivate Blueprint")
-              : (isES ? "Activar Blueprint" : "Activate Blueprint")}
-          </button>
+            <p
+              className="font-mono text-[11px] uppercase tracking-[0.25em] mb-8 text-white/60 font-semibold"
+            >
+              {isES ? "Cómo Pienso" : "How I Think"}
+            </p>
+            <div className="space-y-6">
+              <div className="border-l-2 border-white/20 pl-6">
+                <p className="font-mono text-xs uppercase tracking-wider mb-2" style={{ color: APPLE_BLUE }}>
+                  {isES ? "Flujo de Datos" : "Data Flow"}
+                </p>
+                <p className="font-mono text-sm leading-relaxed text-white/70">
+                  {isES
+                    ? "Unidireccional. State predecible. Single source of truth."
+                    : "Unidirectional. Predictable state. Single source of truth."}
+                </p>
+              </div>
+
+              <div className="border-l-2 border-white/20 pl-6">
+                <p className="font-mono text-xs uppercase tracking-wider mb-2" style={{ color: APPLE_BLUE }}>
+                  {isES ? "APIs" : "API Design"}
+                </p>
+                <p className="font-mono text-sm leading-relaxed text-white/70">
+                  {isES
+                    ? "Comunicación de servicios. Caminos de error. Latencia. Resiliencia."
+                    : "Service communication. Error paths. Latency. Resilience."}
+                </p>
+              </div>
+
+              <div className="border-l-2 border-white/20 pl-6">
+                <p className="font-mono text-xs uppercase tracking-wider mb-2" style={{ color: APPLE_BLUE }}>
+                  {isES ? "Patrones" : "Patterns"}
+                </p>
+                <p className="font-mono text-sm leading-relaxed text-white/70">
+                  {isES
+                    ? "Cuándo sí. Cuándo no. Trade-offs conscientes."
+                    : "When yes. When no. Conscious trade-offs."}
+                </p>
+              </div>
+
+              <div className="border-l-2 border-white/20 pl-6">
+                <p className="font-mono text-xs uppercase tracking-wider mb-2" style={{ color: APPLE_BLUE }}>
+                  {isES ? "IA" : "AI"}
+                </p>
+                <p className="font-mono text-sm leading-relaxed text-white/70">
+                  {isES
+                    ? "La IA acelera, pero no reemplaza el criterio. Saber cuándo ayuda y cuándo no."
+                    : "AI accelerates, but doesn't replace judgment. Knowing when it helps—and when it doesn't."}
+                </p>
+              </div>
+            </div>
+
+            <Link
+              to="/fundamentals"
+              className="inline-flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-wider border-2 px-8 py-4 w-[280px] transition-all hover:translate-x-[3px] hover:translate-y-[3px] group mt-8"
+              style={{ color: INK, backgroundColor: "#FFF", borderColor: "#FFF", boxShadow: `4px 4px 0px 0px ${APPLE_BLUE}` }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "none")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = `4px 4px 0px 0px ${APPLE_BLUE}`)}
+              aria-label={isES ? "Ir a decisiones de arquitectura" : "Go to architecture decisions"}
+            >
+              {isES ? "Ver Decisiones" : "View Decisions"}
+              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
+          </div>
+
+          {/* RIGHT — Blueprint Mode */}
+          <div
+            className="px-8 md:px-14 lg:px-16 py-16 md:py-20 flex flex-col justify-between h-full"
+            style={{ width: '953px', height: '584px' }}
+            data-blueprint="molecule:blueprint-card"
+            data-blueprint-id="blueprint-card"
+          >
+            <div>
+              <p
+                className="font-mono text-[11px] uppercase tracking-[0.25em] mb-6 text-white/60 font-semibold"
+              >
+                Blueprint Mode
+              </p>
+              <h3 className="font-mono font-bold text-2xl md:text-3xl uppercase tracking-tighter text-white leading-tight">
+                {isES
+                  ? "X-Ray del UI."
+                  : "X-Ray your UI."}
+              </h3>
+              <p className="font-mono text-sm leading-relaxed text-white/70 mt-4">
+                {isES
+                  ? "Cada decisión de diseño, hecha visible. Component outlines, padding, spacing, font metrics."
+                  : "Every design decision, made visible. Component outlines, padding, spacing, font metrics."}
+              </p>
+            </div>
+            <button
+              onClick={toggleBlueprintMode}
+              aria-pressed={blueprintMode}
+              aria-label={blueprintMode
+                ? (isES ? "Desactivar modo Blueprint" : "Deactivate Blueprint mode")
+                : (isES ? "Activar modo Blueprint" : "Activate Blueprint mode")}
+              className="mt-8 inline-flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-wider border-2 px-8 py-4 w-[280px] transition-all hover:translate-x-[3px] hover:translate-y-[3px] group cursor-pointer"
+              style={{
+                color: INK,
+                backgroundColor: "#FFF",
+                borderColor: "#FFF",
+                boxShadow: blueprintMode ? "none" : `4px 4px 0px 0px ${APPLE_BLUE}`,
+              }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "none")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = blueprintMode ? "none" : `4px 4px 0px 0px ${APPLE_BLUE}`)}
+            >
+              <ScanLine size={13} className="group-hover:rotate-12 transition-transform" aria-hidden="true" />
+              {blueprintMode
+                ? (isES ? "Desactivar" : "Deactivate")
+                : (isES ? "Activar" : "Activate")}
+            </button>
+          </div>
         </div>
       </section>
 
-      {/*  D.U.C. CTA  */}
-      <section
-        style={{ backgroundColor: INK }}
-        data-blueprint="organism:duc-cta"
-        data-blueprint-id="duc-cta"
-        data-blueprint-logic="Full-width CTA → /duc, INK bg, white button + Apple Blue shadow"
-      >
-        <div className="px-8 md:px-16 py-16 md:py-24 flex flex-col md:flex-row items-center justify-between gap-10 min-h-[320px]">
-          <div className="max-w-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25 mb-4">
-              Developer Under Constraints
-            </p>
-            <h2 className="font-mono font-bold text-3xl md:text-4xl uppercase tracking-tighter text-white leading-tight">
-              {isES
-                ? "Arquitectura que se adapta a tus restricciones."
-                : "Architecture that adapts to your constraints."}
-            </h2>
-          </div>
-          <Link
-            to="/duc"
-            className="shrink-0 inline-flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-wider border-2 px-8 py-4 min-w-[260px] transition-all hover:translate-x-[3px] hover:translate-y-[3px] group"
-            style={{ color: "#1D1D1F", backgroundColor: "#FFF", borderColor: "#FFF", boxShadow: `4px 4px 0px 0px ${APPLE_BLUE}` }}
-            onMouseEnter={e => (e.currentTarget.style.boxShadow = "none")}
-            onMouseLeave={e => (e.currentTarget.style.boxShadow = `4px 4px 0px 0px ${APPLE_BLUE}`)}
-            data-blueprint="atom:duc-cta-btn"
-            data-blueprint-id="duc-cta-btn"
-            data-blueprint-logic="Link → /duc, white bg, boxShadow: 4px 4px APPLE_BLUE"
+      {/* Contact Modal */}
+      {showContact && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+            onClick={() => setShowContact(false)}
+            aria-hidden="true"
+          />
+          <div
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md mx-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label={isES ? "Información de contacto" : "Contact information"}
           >
-            {isES ? "Abrir Herramienta" : "Open Tool"}
-            <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      </section>
+            <div
+              className="border-4 border-ink p-8 md:p-10"
+              style={{ backgroundColor: PAPER }}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowContact(false)}
+                className="absolute top-4 right-4 p-2 hover:bg-ink/10 transition-colors"
+                aria-label="Close"
+              >
+                <X size={20} style={{ color: INK }} />
+              </button>
+
+              {/* Title */}
+              <p
+                className="font-mono text-[11px] uppercase tracking-[0.25em] mb-6 font-semibold"
+                style={{ color: INK }}
+              >
+                {isES ? "Contacto" : "Contact"}
+              </p>
+
+              {/* Contact links */}
+              <div className="space-y-4">
+                {/* Email */}
+                <a
+                  href={`mailto:${CONTACT_INFO.email}`}
+                  className="flex items-center gap-4 p-4 border-l-4 hover:bg-ink/5 transition-colors group cursor-pointer"
+                  style={{ borderColor: APPLE_BLUE }}
+                >
+                  <Mail size={20} style={{ color: APPLE_BLUE }} className="shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-mono text-[9px] uppercase tracking-wider mb-1" style={{ color: INK }}>
+                      Email
+                    </p>
+                    <p className="font-mono text-sm text-ink/70 group-hover:text-ink transition-colors truncate">
+                      {CONTACT_INFO.email}
+                    </p>
+                  </div>
+                </a>
+
+                {/* LinkedIn */}
+                <a
+                  href={CONTACT_INFO.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 border-l-4 hover:bg-ink/5 transition-colors group cursor-pointer"
+                  style={{ borderColor: APPLE_BLUE }}
+                  aria-label="LinkedIn profile"
+                >
+                  <Linkedin size={20} style={{ color: APPLE_BLUE }} className="shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-mono text-[9px] uppercase tracking-wider mb-1" style={{ color: INK }}>
+                      LinkedIn
+                    </p>
+                    <p className="font-mono text-sm text-ink/70 group-hover:text-ink transition-colors">
+                      {isES ? "Ver perfil" : "View profile"}
+                    </p>
+                  </div>
+                </a>
+
+                {/* GitHub */}
+                <a
+                  href={CONTACT_INFO.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-4 border-l-4 hover:bg-ink/5 transition-colors group cursor-pointer"
+                  style={{ borderColor: APPLE_BLUE }}
+                  aria-label="GitHub profile"
+                >
+                  <Github size={20} style={{ color: APPLE_BLUE }} className="shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-mono text-[9px] uppercase tracking-wider mb-1" style={{ color: INK }}>
+                      GitHub
+                    </p>
+                    <p className="font-mono text-sm text-ink/70 group-hover:text-ink transition-colors">
+                      {isES ? "Ver repositorios" : "View repositories"}
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
     </div>
   );

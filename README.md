@@ -1,6 +1,6 @@
 ﻿# Marvin Moncada — Portfolio
 
-> An interactive engineering portfolio that maps real-world constraints — team size, budget, scale — to concrete architecture decisions. Built to show *how* I think, not just *what* I've shipped.
+> An interactive engineering portfolio focused on real-world constraints—team size, budget, scale—and the decisions that make systems last. Built to show *how* I think, not just *what* I've shipped.
 
 **[Live →](#)** &nbsp;|&nbsp; **[CV →](#)** *(URL coming soon)*
 
@@ -8,7 +8,7 @@
 
 ## What it does
 
-Set constraints on the left panel (Solo vs. Team, Bootstrapped vs. Venture-funded, MVP vs. Global scale) and the right panel updates with a real architecture recommendation — database, frontend, hosting, auth — each backed by rationale and trade-offs I've actually worked through on real projects.
+Set constraints on the left panel (Solo vs. Team, Bootstrapped vs. Venture-funded, MVP vs. Global scale) and the right panel updates with a real architecture recommendation—database, frontend, hosting, auth—each backed by rationale and trade-offs from shipped projects.
 
 This is not a technology showcase. It's a decision-making showcase.
 
@@ -20,8 +20,8 @@ This is not a technology showcase. It's a decision-making showcase.
 |---|---|
 | **Constraint-driven architecture** | Architecture panel reacts live to constraint inputs via a pure TypeScript decision engine (`architectureService.ts`) |
 | **Project Lab** | Real shipped projects with status, tech stack, problem/solution/lesson structure |
-| **Blueprint X-Ray** (`B`) | Press `B` to enter dev-inspector mode — magenta component outlines, cyan padding insets, dimension badges, and a tooltip with font/gap metadata for every annotated node |
-| **EN / ES** | Full bilingual content — every string, every component, constraint labels, architecture rationale, CV |
+| **Blueprint X-Ray** (`B`) | Press `B` to enter dev-inspector mode—magenta component outlines, cyan padding insets, dimension badges, and a tooltip with font/gap metadata for every annotated node |
+| **EN / ES** | Full bilingual content—every string, every component, constraint labels, architecture rationale, CV |
 | **Responsive** | Mobile hamburger menu, collapsible constraint panel, touch-safe Blueprint mode |
 | **README pages** | Each project has a dedicated `/projects/:id` route with a reading sidebar, TOC, and styled markdown |
 
@@ -96,24 +96,9 @@ src/
 
 ---
 
-## Local setup
+## AI Philosophy
 
-```bash
-git clone https://github.com/Marvs04/brutafolio.git
-cd brutafolio
-npm install
-npm run dev        # http://localhost:3000
-```
-
----
-
-## Deploy
-
-Deployed on Vercel. The `vercel.json` at repo root rewrites all routes to `index.html` so React Router handles navigation client-side.
-
-```bash
-npm run build      # outputs to dist/
-```
+AI accelerates, but doesn't replace judgment. Knowing when it helps—and when it doesn't—is part of building systems that last.
 
 ---
 

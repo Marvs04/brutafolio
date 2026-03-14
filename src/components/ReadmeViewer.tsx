@@ -56,7 +56,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
   return {
     // h1: treated as a document-level label — title is already in the page header
     h1: ({ children }) => (
-      <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-ink/25 mb-10 pb-6 border-b border-ink/10">
+      <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-ink/70 mb-12 pb-8 border-b-2 border-ink/10">
         {children}
       </p>
     ),
@@ -68,34 +68,34 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       return (
         <h2
           data-section={id}
-          className="font-mono font-bold uppercase tracking-tighter text-base md:text-lg lg:text-xl mt-10 md:mt-14 lg:mt-16 mb-3 md:mb-4 lg:mb-5 pl-3 md:pl-4 lg:pl-5 border-l-2 md:border-l-4 border-accent leading-tight"
+          className="font-mono font-bold uppercase tracking-tighter text-base md:text-lg lg:text-xl mt-12 md:mt-16 lg:mt-20 mb-4 md:mb-5 lg:mb-6 pl-4 md:pl-5 lg:pl-6 border-l-3 md:border-l-4 border-accent leading-tight"
         >
           {children}
         </h2>
       );
     },
     h3: ({ children }) => (
-      <h3 className="font-mono text-[9px] uppercase tracking-[0.3em] font-bold text-accent mt-10 mb-3">
+      <h3 className="font-mono text-[9px] uppercase tracking-[0.3em] font-bold text-accent mt-8 mb-4">
         {children}
       </h3>
     ),
     p: ({ children }) => (
-      <p className="font-mono text-xs md:text-sm lg:text-base leading-relaxed md:leading-[1.75] lg:leading-[1.85] text-ink/70 mb-4 md:mb-5">{children}</p>
+      <p className="font-mono text-xs md:text-sm lg:text-base leading-relaxed md:leading-[1.8] lg:leading-[1.9] text-ink/75 mb-6 md:mb-7">{children}</p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-accent bg-accent/[0.05] pl-6 py-4 my-8 space-y-2">
+      <blockquote className="border-l-4 border-accent bg-accent/[0.08] pl-6 py-5 my-10 space-y-3 italic text-ink/80">
         {children}
       </blockquote>
     ),
-    ul: ({ children }) => <ul className="my-4 md:my-5 space-y-1 md:space-y-2">{children}</ul>,
+    ul: ({ children }) => <ul className="my-6 md:my-7 space-y-2.5 md:space-y-3">{children}</ul>,
     ol: ({ children }) => (
-      <ol className="my-4 md:my-5 space-y-1 md:space-y-2 list-decimal list-inside font-mono text-xs md:text-sm lg:text-base text-ink/70">
+      <ol className="my-6 md:my-7 space-y-2.5 md:space-y-3 list-decimal list-inside font-mono text-xs md:text-sm lg:text-base text-ink/75">
         {children}
       </ol>
     ),
     li: ({ children }) => (
-      <li className="flex gap-2 md:gap-3 font-mono text-xs md:text-sm lg:text-base text-ink/70 leading-relaxed md:leading-[1.75]">
-        <span className="text-accent shrink-0 select-none font-bold text-[10px] md:text-xs">
+      <li className="flex gap-3 md:gap-4 font-mono text-xs md:text-sm lg:text-base text-ink/75 leading-relaxed md:leading-[1.8]">
+        <span className="text-accent shrink-0 select-none font-bold text-[10px] md:text-xs mt-0.5">
           →
         </span>
         <span>{children}</span>
@@ -104,8 +104,8 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
     strong: ({ children }) => (
       <strong className="font-bold text-accent">{children}</strong>
     ),
-    em: ({ children }) => <em className="italic text-ink/60">{children}</em>,
-    hr: () => <hr className="border-t-2 border-ink/10 my-14" />,
+    em: ({ children }) => <em className="italic text-ink/70 font-semibold">{children}</em>,
+    hr: () => <hr className="border-t-2 border-ink/15 my-16" />,
     a: ({ href, children }) => (
       <a
         href={href}
@@ -176,7 +176,7 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
           Projects
         </button>
 
-        <span className="text-ink/20 shrink-0 select-none">|</span>
+        <span className="text-ink/70 shrink-0 select-none">|</span>
 
         <span className="font-bold uppercase tracking-tighter text-xs md:text-sm truncate">
           {project.title}
@@ -217,7 +217,7 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
             className="hidden lg:flex flex-col w-48 shrink-0 border-r-2 border-ink/10 pr-6 overflow-y-auto"
             aria-label="Table of contents"
           >
-            <p className="font-mono text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-ink/30 mb-3 md:mb-4">
+            <p className="font-mono text-[8px] md:text-[9px] uppercase tracking-[0.25em] text-ink/70 mb-3 md:mb-4">
               Sections
             </p>
             <ul className="space-y-1">

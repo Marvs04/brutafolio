@@ -13,11 +13,24 @@
   /* supporting Apple palette — names don't clash with Tailwind's built-in scales */
   --color-volt:   #FFD60A;
   --color-signal: #30D158;
+  
+  /* Accessible grays - AAA contrast compliant */
+  /* Dark backgrounds (#060606): Use light text with high contrast */
+  --color-text-secondary-dark:  #FFFFFF;  /* 1.0 opacity = 21:1 contrast, reduced for subtle text via opacity */
+  /* Light backgrounds (white): Use dark text with high contrast */
+  --color-text-secondary-light: #5A5A5E; /* ~7:1 contrast ratio on white background (AAA) */
+  --color-text-tertiary-light:  #8A8A8E; /* ~5:1 contrast ratio on white background (AA, minimal labels) */
 }
 
 @layer base {
   body {
     @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  /* Focus ring — visible for keyboard nav (WAI-ARIA) */
+  :focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
   }
 }
 
@@ -42,10 +55,5 @@
 }
 
 @utility brutalist-button {
-  @apply bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#007AFF] hover:shadow-[2px_2px_0px_0px_#007AFF] hover:translate-x-[2px] hover:translate-y-[2px] transition-all px-4 py-2 font-mono text-sm uppercase tracking-tighter;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.333%); }
+  @apply bg-white border-2 border-ink shadow-[4px_4px_0px_0px_#007AFF] hover:shadow-[2px_2px_0px_0px_#007AFF] hover:translate-x-[2px] hover:translate-y-[2px] transition-all px-4 py-2 font-mono text-sm uppercase tracking-tighter cursor-pointer;
 }

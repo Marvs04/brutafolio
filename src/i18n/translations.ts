@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Site
     siteTitle: "Developer Under Constraints",
-    footer: "© 2026 ARCHITECT UNDER CONSTRAINTS // BUILT WITH REACT + TYPESCRIPT + TAILWIND",
+    footer: "© 2026 Marvin Moncada // Built with React, TypeScript & Tailwind",
 
     // Nav
     navProjects: "Projects",
@@ -137,7 +137,7 @@ export const translations = {
   es: {
     // Site
     siteTitle: "Desarrollador Bajo Restricciones",
-    footer: "© 2026 ARQUITECTO BAJO RESTRICCIONES // CONSTRUIDO CON REACT + TYPESCRIPT + TAILWIND",
+    footer: "© 2026 Marvin Moncada // Construido con React, TypeScript y Tailwind",
 
     // Nav
     navProjects: "Proyectos",

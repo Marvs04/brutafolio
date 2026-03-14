@@ -9,7 +9,7 @@ import { BlueprintOverlay } from "./components/BlueprintOverlay";
 import { HomePage } from "./pages/HomePage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { CVPage } from "./pages/CVPage";
-import { DUCPage } from "./pages/DUCPage";
+import { FundamentalsPage } from "./pages/FundamentalsPage";
 import { ReadmePage } from "./pages/ReadmePage";
 
 export default function App() {
@@ -35,7 +35,7 @@ export default function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:id" element={<ReadmePage />} />
             <Route path="/cv" element={<CVPage />} />
-            <Route path="/duc" element={<DUCPage />} />
+            <Route path="/fundamentals" element={<FundamentalsPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

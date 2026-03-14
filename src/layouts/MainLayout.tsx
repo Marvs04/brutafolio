@@ -37,7 +37,7 @@ export const MainLayout: React.FC<Props> = ({
     { path: "/", label: lang === "en" ? "Home" : "Inicio", delay: 0 },
     { path: "/projects", label: t.navProjects, delay: 0.4 },
     { path: "/cv", label: t.navCV, delay: 0.8 },
-    { path: "/duc", label: "D.U.C.", delay: 1.2 },
+    { path: "/fundamentals", label: lang === "en" ? "Fundamentals" : "Fundamentos", delay: 1.2 },
   ];
 
   const isActive = (path: string) => {
@@ -66,7 +66,7 @@ export const MainLayout: React.FC<Props> = ({
             className="group flex items-center gap-0 focus:outline-none"
           >
             <div className="w-9 h-9 bg-ink flex items-center justify-center border-2 border-ink transition-all group-hover:shadow-[3px_3px_0px_0px_#007AFF]">
-              <Terminal size={16} className="text-white" />
+              <span className="font-mono font-bold text-accent text-lg leading-none">M</span>
             </div>
             <div className="w-2.5 h-9 bg-accent border-y-2 border-r-2 border-ink" />
           </Link>
@@ -262,13 +262,6 @@ export const MainLayout: React.FC<Props> = ({
         <div className="h-1 bg-accent" />
         <div className="px-6 md:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
           <div className="text-[10px] font-mono text-ink/40 text-center md:text-left tracking-wider">{t.footer}</div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-signal" />
-              <span className="text-[10px] font-mono uppercase tracking-widest">System Operational</span>
-            </div>
-            <span className="text-[10px] font-mono text-ink/30 tracking-wider">14ms</span>
-          </div>
         </div>
       </footer>
     </div>
