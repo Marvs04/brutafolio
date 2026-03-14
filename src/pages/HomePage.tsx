@@ -52,21 +52,16 @@ export const HomePage: React.FC = () => {
               data-blueprint="atom:hero-name"
               data-blueprint-id="hero-name"
             >
-              {/* Role label — AAA contrast on #060606 */}
-              <p
-                className="font-mono text-xs uppercase tracking-[0.3em] mb-3 text-white/70"
-              >
-                {isES ? "Desarrollador" : "Developer"}
-              </p>
               <p
                 className="font-mono font-bold uppercase tracking-tighter leading-[0.88] text-white w-full text-6xl md:text-7xl"
               >
                 MARVIN<br />
                 <span style={{ color: APPLE_BLUE }}>MONCADA</span>
               </p>
-              {/* Junior tag — close to name, no "2026" */}
+              {/* Junior tag — close to name, no "2026"; now larger */}
               <p
-                className="font-mono text-sm uppercase tracking-[0.2em] mt-4 text-white/70"
+                className="font-mono text-2xl md:text-3xl font-bold uppercase tracking-[0.2em] mt-4 text-white/80"
+                style={{ letterSpacing: '0.12em' }}
               >
                 {isES ? "Desarrollador Junior · Costa Rica" : "Junior Developer · Costa Rica"}
               </p>
