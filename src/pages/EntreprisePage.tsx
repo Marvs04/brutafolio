@@ -211,20 +211,31 @@ export function EntreprisePage() {
             </span>
           </motion.div>
 
-          <div className="mb-8 overflow-hidden">
-            {(["TU NÚCLEO", "OPERATIVO."] as const).map((line, i) => (
-              <div key={line} className="overflow-hidden leading-none">
-                <motion.h1
-                  className="font-mono font-black uppercase tracking-tighter text-white leading-[0.92]"
-                  style={{ fontSize: "clamp(3.2rem, 11vw, 10rem)" }}
-                  initial={{ clipPath: "inset(0 100% 0 0)" }}
-                  animate={{ clipPath: "inset(0 0% 0 0)" }}
-                  transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay: 0.15 + i * 0.18 }}
-                >
-                  {line}
-                </motion.h1>
-              </div>
-            ))}
+          <div className="mb-8">
+            {/* Brand name — largest, clip-path reveal */}
+            <div className="overflow-hidden leading-none">
+              <motion.h1
+                className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
+                style={{ fontSize: "clamp(3.8rem, 13vw, 12rem)" }}
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+              >
+                MoncaDev
+              </motion.h1>
+            </div>
+            {/* Tagline — smaller, follows after */}
+            <div className="overflow-hidden leading-none">
+              <motion.p
+                className="font-mono font-bold uppercase tracking-[0.18em] text-white/30"
+                style={{ fontSize: "clamp(0.75rem, 2vw, 1.1rem)" }}
+                initial={{ clipPath: "inset(0 100% 0 0)" }}
+                animate={{ clipPath: "inset(0 0% 0 0)" }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.42 }}
+              >
+                Tu Núcleo Operativo
+              </motion.p>
+            </div>
           </div>
 
           <motion.p
@@ -580,46 +591,52 @@ export function EntreprisePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Email */}
-          <motion.a
-            href="mailto:hola@moncadev.com"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="group border-2 border-white/15 p-7 flex flex-col gap-4 hover:border-accent/40 hover:bg-white/[0.03] transition-all"
           >
-            <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/30">01_ Email</div>
-            <div>
-              <div className="font-mono font-bold text-base text-white mb-1">hola@moncadev.com</div>
-              <div className="font-mono text-sm text-white/40">Respuesta en 24h hábiles</div>
-            </div>
-            <div className="font-mono text-xs uppercase tracking-[0.18em] text-accent flex items-center gap-1 mt-auto">
-              Enviar email
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </div>
-          </motion.a>
+            <a
+              href="mailto:hola@moncadev.com"
+              className="group border-2 border-white/15 p-7 flex flex-col gap-4 hover:border-accent/40 hover:bg-white/[0.03] transition-all h-full"
+            >
+              <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/30">01_ Email</div>
+              <div>
+                <div className="font-mono font-bold text-base text-white mb-1">hola@moncadev.com</div>
+                <div className="font-mono text-sm text-white/40">Respuesta en 24h hábiles</div>
+              </div>
+              <div className="font-mono text-xs uppercase tracking-[0.18em] text-accent flex items-center gap-1 mt-auto">
+                Enviar email
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </div>
+            </a>
+          </motion.div>
 
           {/* WhatsApp */}
-          <motion.a
-            href="https://wa.me/50688888888"
-            target="_blank"
-            rel="noopener noreferrer"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.08 }}
-            className="group border-2 border-white/15 p-7 flex flex-col gap-4 hover:border-signal/40 hover:bg-white/[0.03] transition-all"
           >
-            <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/30">02_ WhatsApp</div>
-            <div>
-              <div className="font-mono font-bold text-base text-white mb-1">+506 8888-8888</div>
-              <div className="font-mono text-sm text-white/40">Lun–Vie 8am–6pm (CR)</div>
-            </div>
-            <div className="font-mono text-xs uppercase tracking-[0.18em] text-signal flex items-center gap-1 mt-auto">
-              Abrir WhatsApp
-              <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
-            </div>
-          </motion.a>
+            <a
+              href="https://wa.me/50688888888"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group border-2 border-white/15 p-7 flex flex-col gap-4 hover:border-signal/40 hover:bg-white/[0.03] transition-all h-full"
+            >
+              <div className="font-mono text-xs uppercase tracking-[0.25em] text-white/30">02_ WhatsApp</div>
+              <div>
+                <div className="font-mono font-bold text-base text-white mb-1">+506 8888-8888</div>
+                <div className="font-mono text-sm text-white/40">Lun–Vie 8am–6pm (CR)</div>
+              </div>
+              <div className="font-mono text-xs uppercase tracking-[0.18em] text-signal flex items-center gap-1 mt-auto">
+                Abrir WhatsApp
+                <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
+              </div>
+            </a>
+          </motion.div>
 
           {/* Location */}
           <motion.div
