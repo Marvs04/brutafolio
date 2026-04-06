@@ -38,8 +38,8 @@ export default function App() {
             <Route path="/projects/:id" element={<ReadmePage />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/fundamentals" element={<FundamentalsPage />} />
-            <Route path="/entreprise" element={<EntreprisePage />} />
-            <Route path="/entreprise/modulo/:id" element={<ModuleDetailPage />} />
+            <Route path="/enterprise" element={<EntreprisePage />} />
+            <Route path="/enterprise/modulo/:id" element={<ModuleDetailPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

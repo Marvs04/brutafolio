@@ -417,10 +417,10 @@ export function EntreprisePage() {
               initial={{ opacity: 0, y: 28, x: i === 0 ? -16 : i === 1 ? 0 : i === 2 ? 16 : 0 }}
               animate={modulesInView ? { opacity: 1, y: 0, x: 0 } : {}}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.09 }}
-              onClick={() => navigate(`/entreprise/modulo/${mod.slug}`)}
+              onClick={() => navigate(`/enterprise/modulo/${mod.slug}`)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => e.key === "Enter" && navigate(`/entreprise/modulo/${mod.slug}`)}
+              onKeyDown={(e) => e.key === "Enter" && navigate(`/enterprise/modulo/${mod.slug}`)}
               className={`group relative brutalist-card overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
                 mod.wide ? "md:col-span-2" : "md:col-span-1"
               }`}

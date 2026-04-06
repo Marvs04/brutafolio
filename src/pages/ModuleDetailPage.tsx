@@ -422,7 +422,7 @@ export function ModuleDetailPage() {
           <div className="font-mono font-black text-6xl text-white/10 mb-4">404</div>
           <div className="font-mono text-sm text-white/40 uppercase tracking-widest mb-8">Módulo no encontrado</div>
           <button
-            onClick={() => navigate("/entreprise")}
+            onClick={() => navigate("/enterprise")}
             className="font-mono text-xs uppercase tracking-[0.22em] text-accent hover:text-white transition-colors"
           >
             ← Volver a MoncaDev
@@ -475,7 +475,7 @@ export function ModuleDetailPage() {
             initial={{ opacity: 0, x: -12 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            onClick={() => navigate("/entreprise")}
+            onClick={() => navigate("/enterprise")}
             className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.22em] text-white/35 hover:text-white transition-colors mb-12 group"
           >
             <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span>
@@ -656,7 +656,7 @@ export function ModuleDetailPage() {
           </div>
           <div className="flex flex-wrap gap-3">
             <button
-              onClick={() => navigate("/entreprise#pricing")}
+              onClick={() => navigate("/enterprise#pricing")}
               className="inline-flex items-center gap-2 border-2 border-white/20 font-mono text-sm uppercase tracking-tighter px-6 py-3 transition-all text-white hover:border-white/40"
               style={{
                 backgroundColor: mod.accent,
@@ -674,7 +674,7 @@ export function ModuleDetailPage() {
               Ver planes →
             </button>
             <button
-              onClick={() => navigate("/entreprise")}
+              onClick={() => navigate("/enterprise")}
               className="font-mono text-sm uppercase tracking-tighter text-white/40 hover:text-white transition-colors flex items-center gap-2 group"
             >
               <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span>
