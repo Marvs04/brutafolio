@@ -79,7 +79,7 @@ export const MainLayout: React.FC<Props> = ({
                   to={path}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "relative text-[9px] md:text-[10px] font-mono uppercase tracking-widest border-2 px-3 md:px-4 h-8 transition-all whitespace-nowrap inline-flex items-center justify-center min-w-max",
+                    "relative text-[9px] md:text-[10px] font-mono uppercase tracking-widest border-2 px-3 md:px-4 h-8 transition-all whitespace-nowrap inline-flex items-center justify-center min-w-24",
                     isActive(path)
                       ? "bg-white text-black border-white shadow-[3px_3px_0px_0px_#007AFF]"
                       : "bg-black text-white border-white hover:bg-white hover:text-black hover:shadow-[3px_3px_0px_0px_#1D1D1F]"
@@ -256,12 +256,12 @@ export const MainLayout: React.FC<Props> = ({
         {children}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t-4 border-ink bg-white">
+      {/* Footer - Minimal, accessible */}
+      <footer className="border-t-4 border-ink bg-white" role="contentinfo" aria-label="Site footer">
         {/* Accent stripe */}
         <div className="h-1 bg-accent" />
         <div className="px-6 md:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
-          <div className="text-[10px] font-mono text-ink/40 text-center md:text-left tracking-wider">{t.footer}</div>
+          <div className="text-xs md:text-sm font-mono text-ink text-center md:text-left tracking-wider">{t.footer}</div>
         </div>
       </footer>
     </div>

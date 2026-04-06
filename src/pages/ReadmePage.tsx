@@ -1,3 +1,4 @@
+// Spacing scale enforced: 4, 8, 12, 16, 24, 32
 import React, { useMemo, useRef, useCallback, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -79,7 +80,7 @@ export const ReadmePage: React.FC = () => {
     >
       {/* ── Dark page header ── */}
       <section
-        className="border-b-4 border-ink px-8 md:px-14 py-12 md:py-16"
+        className="border-b-4 border-ink px-8 md:px-16 py-12 md:py-16"
         style={{ backgroundColor: "#060606" }}
         data-blueprint="organism:page-header"
         data-blueprint-id="readme-page-header"
@@ -87,7 +88,7 @@ export const ReadmePage: React.FC = () => {
       >
         <Link
           to="/projects"
-          className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 hover:text-white transition-colors mb-8"
+          className="inline-flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-white hover:text-accent transition-colors mb-8"
           data-blueprint="atom:back-link"
           data-blueprint-id="readme-back-link"
           data-blueprint-logic="Link → /projects"
@@ -96,9 +97,9 @@ export const ReadmePage: React.FC = () => {
           {isES ? "Proyectos" : "Projects"}
         </Link>
 
-        <div className="flex items-end justify-between gap-6 flex-wrap">
+        <div className="flex items-end justify-between gap-8 flex-wrap">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/70 mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-white mb-4" aria-hidden="true">
               {isES ? "01 / Proyectos / Readme" : "01 / Projects / Readme"}
             </p>
             <h1
@@ -109,18 +110,18 @@ export const ReadmePage: React.FC = () => {
             >
               {project.title}_
             </h1>
-            <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/70 mt-5">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-white mt-4" aria-hidden="true">
               ~{readingTime} {isES ? "min de lectura" : "min read"} · {wordCount.toLocaleString()} {isES ? "palabras" : "words"}
             </p>
           </div>
 
-          <div className="flex gap-3 shrink-0 pb-1">
+          <div className="flex gap-8 shrink-0 pb-4">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border border-white/70 px-4 py-2 text-white/70 hover:text-white hover:border-white transition-colors"
+                className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] border border-white px-8 py-4 text-white hover:text-accent hover:border-accent transition-colors"
                 data-blueprint="atom:github-link"
                 data-blueprint-id="readme-github-link"
                 data-blueprint-logic="Conditional — renders only if project.githubUrl exists"
@@ -134,8 +135,7 @@ export const ReadmePage: React.FC = () => {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] border px-4 py-2 transition-colors"
-                style={{ borderColor: APPLE_BLUE, color: APPLE_BLUE }}
+                className="flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] border px-8 py-4 text-accent border-accent hover:bg-accent hover:text-white transition-colors"
                 data-blueprint="atom:live-link"
               >
                 <ExternalLink size={16} />
@@ -151,7 +151,7 @@ export const ReadmePage: React.FC = () => {
 
         {/* Sticky sidebar */}
         <aside
-          className="hidden lg:flex flex-col w-48 xl:w-64 shrink-0 border-r-4 border-ink bg-paper sticky top-14 h-[calc(100vh-56px)] overflow-y-auto"
+          className="hidden lg:flex flex-col w-48 xl:w-64 shrink-0 border-r-4 border-ink bg-paper sticky top-16 h-[calc(100vh-64px)] overflow-y-auto"
           data-blueprint="molecule:readme-sidebar"
           data-blueprint-id="readme-sidebar"
         >
@@ -160,17 +160,17 @@ export const ReadmePage: React.FC = () => {
             {/* Back button */}
             <Link
               to="/projects"
-              className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70 hover:text-accent transition-colors"
+              className="inline-flex items-center gap-4 font-mono text-xs uppercase tracking-[0.2em] text-ink hover:text-accent transition-colors"
             >
               <ArrowLeft size={16} />
               {isES ? "Proyectos" : "Projects"}
             </Link>
 
-            <hr className="border-ink/10" />
+            <hr className="border-ink/10 my-4" />
 
             {/* Project meta */}
             <div
-              className="space-y-3"
+              className="space-y-4"
               data-blueprint="molecule:project-meta"
               data-blueprint-id="readme-meta"
             >
@@ -179,24 +179,24 @@ export const ReadmePage: React.FC = () => {
                   const firstSection = contentRef.current?.querySelector("[data-section]");
                   if (firstSection) firstSection.scrollIntoView({ behavior: "smooth", block: "start" });
                 }}
-                className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70 hover:text-accent transition-colors cursor-pointer font-semibold"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-ink hover:text-accent transition-colors cursor-pointer font-semibold"
               >
                 Info
               </button>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {([
                   { label: isES ? "Año" : "Year", value: project.year },
                   { label: isES ? "Rol" : "Role", value: project.teamRole.toUpperCase() },
                 ] as { label: string; value: string }[]).map(({ label, value }) => (
                   <div key={label} className="flex justify-between items-center">
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-ink/70">
+                    <span className="font-mono text-xs uppercase tracking-widest text-ink">
                       {label}
                     </span>
-                    <span className="font-mono text-[9px] font-bold text-ink">{value}</span>
+                    <span className="font-mono text-xs font-bold text-ink">{value}</span>
                   </div>
                 ))}
                 <div className="flex justify-between items-center">
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-ink/70">
+                  <span className="font-mono text-xs uppercase tracking-widest text-ink">
                     Status
                   </span>
                   <span
@@ -213,11 +213,11 @@ export const ReadmePage: React.FC = () => {
               </div>
             </div>
 
-            <hr className="border-ink/10" />
+            <hr className="border-ink/10 my-4" />
 
             {/* Tech stack */}
             <div
-              className="space-y-3"
+              className="space-y-4"
               data-blueprint="molecule:tech-stack"
               data-blueprint-id="readme-stack"
             >
@@ -243,7 +243,7 @@ export const ReadmePage: React.FC = () => {
               >
                 Stack
               </button>
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-4">
                 {project.techStack.map((tech) => (
                   <span
                     key={tech}
@@ -258,23 +258,23 @@ export const ReadmePage: React.FC = () => {
             {/* TOC */}
             {toc.length > 1 && (
               <>
-                <hr className="border-ink/10" />
+                <hr className="border-ink/10 my-4" />
                 <div
-                  className="space-y-3"
+                  className="space-y-4"
                   data-blueprint="molecule:toc"
                   data-blueprint-id="readme-toc"
                 >
                   <p className="font-mono text-[9px] uppercase tracking-[0.25em] text-ink/70">
                     {isES ? "Secciones" : "Sections"}
                   </p>
-                  <ul className="space-y-1">
+                  <ul className="space-y-4">
                     {toc.map(({ id: sectionId, text }) => {
                       const isActive = activeSection === sectionId;
                       return (
                         <li key={sectionId}>
                           <button
                             onClick={() => scrollTo(sectionId)}
-                            className={`w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] py-2 leading-snug transition-all pl-2 border-l-2 ${ 
+                            className={`w-full text-left font-mono text-[9px] uppercase tracking-[0.1em] py-4 leading-snug transition-all pl-4 border-l-2 ${ 
                               isActive 
                                 ? "border-accent text-accent font-bold" 
                                 : "border-transparent text-ink/70 hover:text-accent"
@@ -297,7 +297,7 @@ export const ReadmePage: React.FC = () => {
 
         {/* Markdown content */}
         <div
-          className="flex-1 px-8 md:px-16 lg:px-20 py-16 md:py-20 lg:py-24"
+          className="flex-1 px-8 md:px-16 lg:px-24 py-16 md:py-24 lg:py-32"
           data-blueprint="molecule:readme-content"
           data-blueprint-id="readme-body"
           data-blueprint-logic="ReactMarkdown with buildComponents() — GFM enabled"

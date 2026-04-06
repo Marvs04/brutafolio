@@ -40,7 +40,7 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
         data-blueprint="molecule:form-section"
         data-blueprint-id="section-team-size"
       >
-        <label className="text-[10px] uppercase tracking-widest opacity-50 font-mono mb-4 block">{t.c01TeamSize}</label>
+        <label className="text-xs uppercase tracking-widest text-ink font-mono mb-4 block" aria-hidden="true">{t.c01TeamSize}</label>
         <div className="grid grid-cols-3 gap-2">
           {Object.values(TeamSize).map((size) => (
             <button
@@ -61,7 +61,7 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
         data-blueprint="molecule:form-section"
         data-blueprint-id="section-budget"
       >
-        <label className="text-[10px] uppercase tracking-widest opacity-50 font-mono mb-4 block">{t.c02Budget}</label>
+        <label className="text-xs uppercase tracking-widest text-ink font-mono mb-4 block" aria-hidden="true">{t.c02Budget}</label>
         <div className="flex flex-col gap-2">
           {Object.values(Budget).map((budget) => (
             <button
@@ -82,7 +82,7 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
         data-blueprint="molecule:form-section"
         data-blueprint-id="section-scale"
       >
-        <label className="text-[10px] uppercase tracking-widest opacity-50 font-mono mb-4 block">{t.c03Scale}</label>
+        <label className="text-xs uppercase tracking-widest text-ink font-mono mb-4 block" aria-hidden="true">{t.c03Scale}</label>
         <div className="grid grid-cols-3 gap-2">
           {Object.values(Scale).map((scale) => (
             <button
@@ -103,7 +103,7 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
         data-blueprint="molecule:form-section"
         data-blueprint-id="section-realtime"
       >
-        <label className="text-[10px] uppercase tracking-widest opacity-50 font-mono mb-4 block">{t.c04Realtime}</label>
+        <label className="text-xs uppercase tracking-widest text-ink font-mono mb-4 block" aria-hidden="true">{t.c04Realtime}</label>
         <button
           onClick={() => onUpdate("realtime", !constraints.realtime)}
           className={cn(
@@ -119,7 +119,7 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
         data-blueprint="molecule:form-section"
         data-blueprint-id="section-deadline"
       >
-        <label className="text-[10px] uppercase tracking-widest opacity-50 font-mono mb-4 block">{t.c05Deadline}</label>
+        <label className="text-xs uppercase tracking-widest text-ink font-mono mb-4 block" aria-hidden="true">{t.c05Deadline}</label>
         <input
           type="range"
           min="1"
@@ -128,10 +128,10 @@ export const ConstraintPanel: React.FC<Props> = ({ constraints, onUpdate }) => {
           onChange={(e) => onUpdate("deadline", parseInt(e.target.value))}
           className="w-full accent-ink"
         />
-        <div className="flex justify-between font-mono text-[10px] mt-2">
-          <span>1mo</span>
+        <div className="flex justify-between font-mono text-xs mt-2">
+          <span aria-hidden="true">1mo</span>
           <span className="text-accent font-bold">{constraints.deadline}mo</span>
-          <span>12mo</span>
+          <span aria-hidden="true">12mo</span>
         </div>
       </section>
     </div>

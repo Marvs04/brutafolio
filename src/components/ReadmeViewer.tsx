@@ -56,7 +56,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
   return {
     // h1: treated as a document-level label — title is already in the page header
     h1: ({ children }) => (
-      <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-ink/70 mb-12 pb-8 border-b-2 border-ink/10">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink mb-12 pb-8 border-b-2 border-ink/10" aria-hidden="true">
         {children}
       </p>
     ),
@@ -75,7 +75,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       );
     },
     h3: ({ children }) => (
-      <h3 className="font-mono text-[9px] uppercase tracking-[0.3em] font-bold text-accent mt-8 mb-4">
+      <h3 className="font-mono text-xs uppercase tracking-[0.2em] font-bold text-accent mt-8 mb-4">
         {children}
       </h3>
     ),
@@ -94,7 +94,7 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       </ol>
     ),
     li: ({ children }) => (
-      <li className="flex gap-3 md:gap-4 font-mono text-xs md:text-sm lg:text-base text-ink/75 leading-relaxed md:leading-[1.8]">
+      <li className="flex gap-3 md:gap-4 font-mono text-xs md:text-sm lg:text-base text-ink leading-relaxed md:leading-[1.8]">
         <span className="text-accent shrink-0 select-none font-bold text-[10px] md:text-xs mt-0.5">
           →
         </span>
@@ -137,12 +137,12 @@ export function buildComponents(): Record<string, React.ComponentType<any>> {
       <tr className="border-b border-ink/10">{children}</tr>
     ),
     th: ({ children }) => (
-      <th className="text-left font-mono text-[8px] md:text-[9px] lg:text-[10px] uppercase tracking-[0.12em] p-2 md:p-3 border border-ink/20 bg-ink/5">
+      <th className="text-left font-mono text-xs uppercase tracking-[0.1em] p-2 md:p-3 border border-ink/20 bg-ink/5">
         {children}
       </th>
     ),
     td: ({ children }) => (
-      <td className="p-2 md:p-3 border border-ink/10 font-mono text-[9px] md:text-[10px] lg:text-[12px] text-ink/65">{children}</td>
+      <td className="p-2 md:p-3 border border-ink/10 font-mono text-xs md:text-sm lg:text-base text-ink">{children}</td>
     ),
   };
 }
@@ -170,7 +170,7 @@ export const ReadmeViewer: React.FC<Props> = ({ project, onBack }) => {
       <div className="flex items-center gap-4 pb-5 mb-0 border-b-2 border-ink shrink-0 flex-wrap gap-y-3">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] opacity-50 hover:opacity-100 hover:text-accent transition-all shrink-0"
+          className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-ink hover:text-accent transition-all shrink-0"
         >
           <ArrowLeft size={14} />
           Projects

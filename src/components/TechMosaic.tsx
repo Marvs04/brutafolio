@@ -110,7 +110,7 @@ const TailwindIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 // — Tech registry ———————————————————————————————————————————————————————————
 
-const TECHS: Tech[] = [
+export const TECHS: Tech[] = [
   { name: "React",       color: "#61DAFB", icon: ReactIcon },
   { name: "TypeScript",  color: "#3178C6", icon: TypeScriptIcon },
   { name: "Next.js",     color: "#ffffff", icon: NextJsIcon },
@@ -149,7 +149,7 @@ export const TechMosaic: React.FC<TechMosaicProps> = ({ clickable = true, classN
             style={{ aspectRatio: "1" }}
           >
             <Icon className="w-6 h-6 text-ink/40 group-hover:text-inherit transition-colors duration-150" />
-            <span className="font-mono text-[8px] uppercase tracking-wider text-ink/50 group-hover:text-ink/80 transition-colors duration-150 leading-none text-center">
+            <span className="font-mono text-xs uppercase tracking-wider text-ink group-hover:text-accent transition-colors duration-150 leading-none text-center" aria-hidden="true">
               {name.replace(" CSS", "").replace(" 19", "").replace(" 5", "")}
             </span>
           </div>
