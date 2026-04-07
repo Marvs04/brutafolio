@@ -192,12 +192,21 @@ export function EntreprisePage() {
     return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafId); };
   }, []);
 
-  const q1     = mkPhase(sp, 0.00, 0.07, 0.20, 0.29);
-  const q2     = mkPhase(sp, 0.27, 0.34, 0.47, 0.56);
-  const q3     = mkPhase(sp, 0.54, 0.61, 0.72, 0.80);
-  const bridge = mkPhase(sp, 0.78, 0.84, 0.89, 0.94);
-  const final  = { o: sp < 0.88 ? 0 : sp < 0.97 ? (sp - 0.88) / 0.09 : 1,
-                   y: sp < 0.88 ? 44 : sp < 0.97 ? 44 * (1 - (sp - 0.88) / 0.09) : 0 };
+  // Phases — timed for 380vh section
+  const q1     = mkPhase(sp, 0.00, 0.06, 0.16, 0.23);
+  const q2     = mkPhase(sp, 0.21, 0.27, 0.39, 0.46);
+  const q3     = mkPhase(sp, 0.44, 0.50, 0.62, 0.69);
+  const bridge = mkPhase(sp, 0.67, 0.72, 0.77, 0.82);
+  // "MONCADEV TIENE LA SOLUCIÓN." — new beat before the full reveal
+  const solve  = mkPhase(sp, 0.80, 0.85, 0.91, 0.96);
+  // Final hero — crossfades WITH solve so MONCADEV appears to stay
+  const final  = { o: sp < 0.90 ? 0 : sp < 0.98 ? (sp - 0.90) / 0.08 : 1,
+                   y: sp < 0.90 ? 44 : sp < 0.98 ? 44 * (1 - (sp - 0.90) / 0.08) : 0 };
+
+  // Accent glow — shifts blue→green→yellow→blue across the story arc
+  const glowBlue   = sp < 0.23 ? 1 : sp < 0.27 ? 1 - (sp - 0.23) / 0.04 : sp > 0.88 ? Math.min(1, (sp - 0.88) / 0.06) : 0;
+  const glowGreen  = sp < 0.21 ? 0 : sp < 0.27 ? (sp - 0.21) / 0.06 : sp < 0.44 ? 1 : sp < 0.50 ? 1 - (sp - 0.44) / 0.06 : 0;
+  const glowYellow = sp < 0.44 ? 0 : sp < 0.50 ? (sp - 0.44) / 0.06 : sp < 0.67 ? 1 : sp < 0.73 ? 1 - (sp - 0.67) / 0.06 : 0;
 
   return (
     <div className="flex flex-col">
@@ -208,9 +217,9 @@ export function EntreprisePage() {
       <section
         ref={heroSectionRef}
         className="relative bg-[#060606]"
-        style={{ minHeight: "300vh" }}
+        style={{ minHeight: "380vh" }}
       >
-        {/* Sticky frame — stays in view while outer section scrolls */}
+        {/* Sticky frame */}
         <div
           ref={heroRef}
           onMouseMove={handleMouseMove}
@@ -227,29 +236,47 @@ export function EntreprisePage() {
           <div
             className="pointer-events-none absolute inset-0"
             style={{
-              background: `radial-gradient(700px circle at ${orb.x}% ${orb.y}%, rgba(0,122,255,0.07), transparent 65%)`,
+              background: `radial-gradient(700px circle at ${orb.x}% ${orb.y}%, rgba(0,122,255,0.06), transparent 65%)`,
               transition: "background 0.1s ease-out",
             }}
           />
+
+          {/* Accent glows — shift color with each story beat */}
+          <div className="pointer-events-none absolute inset-0" style={{
+            opacity: glowBlue,
+            background: "radial-gradient(600px circle at 12% 78%, rgba(0,122,255,0.12), transparent 60%)",
+          }} />
+          <div className="pointer-events-none absolute inset-0" style={{
+            opacity: glowGreen,
+            background: "radial-gradient(600px circle at 12% 78%, rgba(48,209,88,0.10), transparent 60%)",
+          }} />
+          <div className="pointer-events-none absolute inset-0" style={{
+            opacity: glowYellow,
+            background: "radial-gradient(600px circle at 12% 78%, rgba(255,214,10,0.08), transparent 60%)",
+          }} />
+
+          {/* Question counter — quiet top-right, visible during questions */}
           <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "radial-gradient(600px circle at 85% 80%, rgba(48,209,88,0.04), transparent 60%)" }}
-          />
+            className="absolute top-8 right-8 md:right-14 lg:right-16 font-mono text-xs tracking-[0.22em] text-white/20 uppercase transition-opacity duration-300"
+            style={{ opacity: sp > 0.04 && sp < 0.75 ? 1 : 0 }}
+          >
+            {sp < 0.23 ? "01 / 03" : sp < 0.47 ? "02 / 03" : "03 / 03"}
+          </div>
 
-          {/* ── Story beats — each absolutely placed, driven by scroll ── */}
+          {/* ── Story beats ── */}
 
-          {/* Questions Q1 / Q2 / Q3 */}
+          {/* Q1 / Q2 / Q3 */}
           {([
-            { ph: q1, label: "01_ Inventario", lines: ["¿CUÁNTO INVENTARIO", "TE QUEDA?"],            accent: "#007AFF" },
-            { ph: q2, label: "02_ Ventas",     lines: ["¿CUÁNTO",            "VENDISTE HOY?"],        accent: "#30D158" },
-            { ph: q3, label: "03_ Clientes",   lines: ["¿QUIÉNES SON TUS",   "MEJORES CLIENTES?"],    accent: "#FFD60A" },
+            { ph: q1, label: "01_ Inventario", lines: ["¿CUÁNTO INVENTARIO", "TE QUEDA?"],          accent: "#007AFF" },
+            { ph: q2, label: "02_ Ventas",     lines: ["¿CUÁNTO",            "VENDISTE HOY?"],      accent: "#30D158" },
+            { ph: q3, label: "03_ Clientes",   lines: ["¿QUIÉNES SON TUS",   "MEJORES CLIENTES?"],  accent: "#FFD60A" },
           ] as const).map(({ ph, label, lines, accent }) => (
             <div
               key={label}
               className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16 pointer-events-none"
               style={{ opacity: ph.o, transform: `translateY(${ph.y}px)` }}
             >
-              <div className="font-mono text-xs uppercase tracking-[0.3em] mb-5" style={{ color: `${accent}90` }}>
+              <div className="font-mono text-xs uppercase tracking-[0.3em] mb-5" style={{ color: `${accent}95` }}>
                 {label}
               </div>
               {lines.map((line) => (
@@ -261,7 +288,11 @@ export function EntreprisePage() {
                   {line}
                 </div>
               ))}
-              <div className="mt-8 h-[3px] w-20" style={{ backgroundColor: accent }} />
+              {/* Accent bar — grows with phase opacity */}
+              <div
+                className="mt-8 h-[3px]"
+                style={{ width: `${ph.o * 80}px`, backgroundColor: accent, transition: "width 0.05s linear" }}
+              />
             </div>
           ))}
 
@@ -270,47 +301,57 @@ export function EntreprisePage() {
             className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16 pointer-events-none"
             style={{ opacity: bridge.o, transform: `translateY(${bridge.y}px)` }}
           >
-            <p
-              className="font-mono text-white/50 leading-[1.45] max-w-2xl"
-              style={{ fontSize: "clamp(1.6rem, 4.5vw, 4rem)" }}
-            >
+            <p className="font-mono text-white/45 leading-[1.45] max-w-2xl" style={{ fontSize: "clamp(1.6rem, 4.5vw, 4rem)" }}>
               Ningún negocio debería<br />
               responder con{" "}
               <span className="text-white font-bold">"no sé".</span>
             </p>
           </div>
 
-          {/* Final — MoncaDev */}
+          {/* "MONCADEV TIENE LA SOLUCIÓN." — new beat, MONCADEV at same position as final */}
+          <div
+            className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16 pointer-events-none"
+            style={{ opacity: solve.o, transform: `translateY(${solve.y}px)` }}
+          >
+            <h1
+              className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
+              style={{ fontSize: "clamp(3.8rem, 13vw, 12rem)" }}
+            >
+              MoncaDev
+            </h1>
+            {/* "TIENE LA SOLUCIÓN." — accent colored, slides in right after the name */}
+            <p
+              className="font-mono font-black uppercase tracking-tighter leading-none mt-1"
+              style={{
+                fontSize: "clamp(1.1rem, 3.2vw, 2.8rem)",
+                color: "#007AFF",
+                opacity: solve.o > 0.6 ? (solve.o - 0.6) / 0.4 : 0,
+              }}
+            >
+              tiene la solución.
+            </p>
+            {/* Spacer — equalizes height with final phase so MONCADEV stays put */}
+            <div className="mt-8 h-12" />
+          </div>
+
+          {/* Final — full hero, MONCADEV at same flex-center position as solve */}
           <div
             className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16"
             style={{ opacity: final.o, transform: `translateY(${final.y}px)` }}
           >
-            <div className="flex items-center gap-3 mb-10">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-signal" />
-              </span>
-              <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/40">
-                Beta abierta · SaaS · Centroamérica
-              </span>
-            </div>
-
-            <div className="mb-8">
-              <h1
-                className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
-                style={{ fontSize: "clamp(3.8rem, 13vw, 12rem)" }}
-              >
-                MoncaDev
-              </h1>
-              <p
-                className="font-mono font-bold uppercase tracking-[0.18em] text-white/30 mt-2"
-                style={{ fontSize: "clamp(0.75rem, 2vw, 1.1rem)" }}
-              >
-                Tu Núcleo Operativo
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-5">
+            <h1
+              className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
+              style={{ fontSize: "clamp(3.8rem, 13vw, 12rem)" }}
+            >
+              MoncaDev
+            </h1>
+            <p
+              className="font-mono font-bold uppercase tracking-[0.18em] text-white/30 mt-2"
+              style={{ fontSize: "clamp(0.75rem, 2vw, 1.1rem)" }}
+            >
+              Tu Núcleo Operativo
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-5">
               <a
                 href="#pricing"
                 className="inline-flex items-center gap-2 border-2 border-white/20 bg-accent text-white font-mono text-sm uppercase tracking-tighter px-6 py-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.12)] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.12)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
@@ -325,16 +366,34 @@ export function EntreprisePage() {
                 <span className="inline-block group-hover:translate-x-1 transition-transform">→</span>
               </a>
             </div>
-
-            <div className="mt-16 font-mono text-xs uppercase tracking-[0.22em] text-white/20">
-              MoncaDev · Costa Rica · Est. 2026
-            </div>
           </div>
 
-          {/* Scroll hint — fades out after first scroll */}
+          {/* Status pill — absolutely positioned so it doesn't shift MONCADEV */}
+          <div
+            className="absolute top-8 left-8 md:left-14 lg:left-16 flex items-center gap-3"
+            style={{ opacity: final.o > 0.5 ? (final.o - 0.5) / 0.5 : 0 }}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-signal" />
+            </span>
+            <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/40">
+              Beta abierta · SaaS · Centroamérica
+            </span>
+          </div>
+
+          {/* Origin stamp */}
+          <div
+            className="absolute bottom-16 left-8 md:left-14 lg:left-16 font-mono text-xs uppercase tracking-[0.22em] text-white/20"
+            style={{ opacity: final.o }}
+          >
+            MoncaDev · Costa Rica · Est. 2026
+          </div>
+
+          {/* Scroll hint */}
           <div
             className="absolute bottom-8 left-8 md:left-14 lg:left-16 flex items-center gap-2 pointer-events-none"
-            style={{ opacity: sp < 0.02 ? 1 : Math.max(0, 1 - (sp - 0.02) / 0.05) }}
+            style={{ opacity: sp < 0.02 ? 1 : Math.max(0, 1 - (sp - 0.02) / 0.04) }}
           >
             <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-white/25">Scroll</span>
             <motion.span
@@ -346,7 +405,7 @@ export function EntreprisePage() {
             </motion.span>
           </div>
 
-          {/* Progress bar — thin line at bottom showing story position */}
+          {/* Progress bar */}
           <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.05]">
             <div
               className="h-full bg-accent"
@@ -541,16 +600,7 @@ export function EntreprisePage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
-          <div className="hidden md:block absolute top-[2.6rem] left-[33.3%] right-[33.3%] h-px bg-white/10">
-            <motion.div
-              className="h-full bg-accent origin-left"
-              initial={{ scaleX: 0 }}
-              animate={stepsInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 0.9, ease: "easeInOut", delay: 0.4 }}
-            />
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0">
           {STEPS.map((step, i) => (
             <motion.div
               key={step.n}
