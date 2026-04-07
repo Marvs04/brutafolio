@@ -38,6 +38,14 @@ function useCounter(target: number, inView: boolean, duration = 1.6) {
   return val;
 }
 
+/* Scroll-driven phase helper — opacity + y offset */
+function mkPhase(sp: number, iS: number, hS: number, hE: number, oE: number) {
+  return {
+    o: sp < iS ? 0 : sp < hS ? (sp - iS) / (hS - iS) : sp < hE ? 1 : sp < oE ? 1 - (sp - hE) / (oE - hE) : 0,
+    y: sp < iS ? 44 : sp < hS ? 44 * (1 - (sp - iS) / (hS - iS)) : sp < hE ? 0 : sp < oE ? -44 * ((sp - hE) / (oE - hE)) : -44,
+  };
+}
+
 /* ─────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────── */
@@ -165,121 +173,187 @@ export function EntreprisePage() {
   const cSupport = useCounter(4, statsInView);
   const cGoal = useCounter(50, statsInView);
 
+  /* Scroll-driven hero */
+  const heroSectionRef = useRef<HTMLDivElement>(null);
+  const [sp, setSp] = useState(0);
+  useEffect(() => {
+    let rafId: number;
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const el = heroSectionRef.current;
+        if (!el) return;
+        const total = el.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        setSp(Math.min(1, Math.max(0, -el.getBoundingClientRect().top / total)));
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); cancelAnimationFrame(rafId); };
+  }, []);
+
+  const q1     = mkPhase(sp, 0.00, 0.07, 0.20, 0.29);
+  const q2     = mkPhase(sp, 0.27, 0.34, 0.47, 0.56);
+  const q3     = mkPhase(sp, 0.54, 0.61, 0.72, 0.80);
+  const bridge = mkPhase(sp, 0.78, 0.84, 0.89, 0.94);
+  const final  = { o: sp < 0.88 ? 0 : sp < 0.97 ? (sp - 0.88) / 0.09 : 1,
+                   y: sp < 0.88 ? 44 : sp < 0.97 ? 44 * (1 - (sp - 0.88) / 0.09) : 0 };
+
   return (
     <div className="flex flex-col">
 
       {/* ──────────────────────────────────────
-          HERO
+          HERO — scroll-driven storytelling
       ────────────────────────────────────── */}
       <section
-        ref={heroRef}
-        onMouseMove={handleMouseMove}
-        className="relative bg-[#060606] min-h-screen flex flex-col justify-center overflow-hidden select-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px",
-        }}
+        ref={heroSectionRef}
+        className="relative bg-[#060606]"
+        style={{ minHeight: "300vh" }}
       >
+        {/* Sticky frame — stays in view while outer section scrolls */}
         <div
-          className="pointer-events-none absolute inset-0"
+          ref={heroRef}
+          onMouseMove={handleMouseMove}
+          className="sticky top-0 h-screen overflow-hidden select-none"
           style={{
-            background: `radial-gradient(700px circle at ${orb.x}% ${orb.y}%, rgba(0,122,255,0.07), transparent 65%)`,
-            transition: "background 0.1s ease-out",
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px)
+            `,
+            backgroundSize: "64px 64px",
           }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(600px circle at 85% 80%, rgba(48,209,88,0.04), transparent 60%)" }}
-        />
+        >
+          {/* Cursor orb */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: `radial-gradient(700px circle at ${orb.x}% ${orb.y}%, rgba(0,122,255,0.07), transparent 65%)`,
+              transition: "background 0.1s ease-out",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(600px circle at 85% 80%, rgba(48,209,88,0.04), transparent 60%)" }}
+          />
 
-        <div className="relative z-10 px-8 md:px-14 lg:px-16 pt-20 pb-32">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            className="flex items-center gap-3 mb-10"
+          {/* ── Story beats — each absolutely placed, driven by scroll ── */}
+
+          {/* Questions Q1 / Q2 / Q3 */}
+          {([
+            { ph: q1, label: "01_ Inventario", lines: ["¿CUÁNTO INVENTARIO", "TE QUEDA?"],            accent: "#007AFF" },
+            { ph: q2, label: "02_ Ventas",     lines: ["¿CUÁNTO",            "VENDISTE HOY?"],        accent: "#30D158" },
+            { ph: q3, label: "03_ Clientes",   lines: ["¿QUIÉNES SON TUS",   "MEJORES CLIENTES?"],    accent: "#FFD60A" },
+          ] as const).map(({ ph, label, lines, accent }) => (
+            <div
+              key={label}
+              className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16 pointer-events-none"
+              style={{ opacity: ph.o, transform: `translateY(${ph.y}px)` }}
+            >
+              <div className="font-mono text-xs uppercase tracking-[0.3em] mb-5" style={{ color: `${accent}90` }}>
+                {label}
+              </div>
+              {lines.map((line) => (
+                <div
+                  key={line}
+                  className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
+                  style={{ fontSize: "clamp(2.8rem, 8.5vw, 7.5rem)" }}
+                >
+                  {line}
+                </div>
+              ))}
+              <div className="mt-8 h-[3px] w-20" style={{ backgroundColor: accent }} />
+            </div>
+          ))}
+
+          {/* Bridge */}
+          <div
+            className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16 pointer-events-none"
+            style={{ opacity: bridge.o, transform: `translateY(${bridge.y}px)` }}
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-signal" />
-            </span>
-            <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/40">
-              Beta abierta · SaaS · Centroamérica
-            </span>
-          </motion.div>
+            <p
+              className="font-mono text-white/50 leading-[1.45] max-w-2xl"
+              style={{ fontSize: "clamp(1.6rem, 4.5vw, 4rem)" }}
+            >
+              Ningún negocio debería<br />
+              responder con{" "}
+              <span className="text-white font-bold">"no sé".</span>
+            </p>
+          </div>
 
-          <div className="mb-8">
-            {/* Brand name — largest, clip-path reveal */}
-            <div className="overflow-hidden leading-none">
-              <motion.h1
+          {/* Final — MoncaDev */}
+          <div
+            className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 lg:px-16"
+            style={{ opacity: final.o, transform: `translateY(${final.y}px)` }}
+          >
+            <div className="flex items-center gap-3 mb-10">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-signal opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-signal" />
+              </span>
+              <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/40">
+                Beta abierta · SaaS · Centroamérica
+              </span>
+            </div>
+
+            <div className="mb-8">
+              <h1
                 className="font-mono font-black uppercase tracking-tighter text-white leading-[0.9]"
                 style={{ fontSize: "clamp(3.8rem, 13vw, 12rem)" }}
-                initial={{ clipPath: "inset(0 100% 0 0)" }}
-                animate={{ clipPath: "inset(0 0% 0 0)" }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
               >
                 MoncaDev
-              </motion.h1>
-            </div>
-            {/* Tagline — smaller, follows after */}
-            <div className="overflow-hidden leading-none">
-              <motion.p
-                className="font-mono font-bold uppercase tracking-[0.18em] text-white/30"
+              </h1>
+              <p
+                className="font-mono font-bold uppercase tracking-[0.18em] text-white/30 mt-2"
                 style={{ fontSize: "clamp(0.75rem, 2vw, 1.1rem)" }}
-                initial={{ clipPath: "inset(0 100% 0 0)" }}
-                animate={{ clipPath: "inset(0 0% 0 0)" }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.42 }}
               >
                 Tu Núcleo Operativo
-              </motion.p>
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-5">
+              <a
+                href="#pricing"
+                className="inline-flex items-center gap-2 border-2 border-white/20 bg-accent text-white font-mono text-sm uppercase tracking-tighter px-6 py-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.12)] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.12)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                Prueba 14 días gratis
+              </a>
+              <a
+                href="#modules"
+                className="font-mono text-sm uppercase tracking-tighter text-white/45 hover:text-white/80 transition-colors flex items-center gap-2 group"
+              >
+                Ver módulos
+                <span className="inline-block group-hover:translate-x-1 transition-transform">→</span>
+              </a>
+            </div>
+
+            <div className="mt-16 font-mono text-xs uppercase tracking-[0.22em] text-white/20">
+              MoncaDev · Costa Rica · Est. 2026
             </div>
           </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.62, ease: "easeOut" }}
-            className="font-mono text-sm md:text-base text-white/45 max-w-sm mb-12 leading-[1.7]"
+          {/* Scroll hint — fades out after first scroll */}
+          <div
+            className="absolute bottom-8 left-8 md:left-14 lg:left-16 flex items-center gap-2 pointer-events-none"
+            style={{ opacity: sp < 0.02 ? 1 : Math.max(0, 1 - (sp - 0.02) / 0.05) }}
           >
-            Software de gestión modular para pequeñas y medianas empresas.
-            Inventario, ventas y reportes — en un solo lugar.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.82, ease: "easeOut" }}
-            className="flex flex-wrap items-center gap-5"
-          >
-            <a
-              href="#pricing"
-              className="inline-flex items-center gap-2 border-2 border-white/20 bg-accent text-white font-mono text-sm uppercase tracking-tighter px-6 py-3 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.12)] hover:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.12)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            <span className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-white/25">Scroll</span>
+            <motion.span
+              className="text-white/25 text-xs"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             >
-              Prueba 14 días gratis
-            </a>
-            <a
-              href="#modules"
-              className="font-mono text-sm uppercase tracking-tighter text-white/45 hover:text-white/80 transition-colors flex items-center gap-2 group"
-            >
-              Ver módulos
-              <span className="inline-block group-hover:translate-x-1 transition-transform">→</span>
-            </a>
-          </motion.div>
+              ↓
+            </motion.span>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1.15 }}
-            className="mt-20 font-mono text-xs uppercase tracking-[0.22em] text-white/20"
-          >
-            MoncaDev · Costa Rica · Est. 2026
-          </motion.div>
+          {/* Progress bar — thin line at bottom showing story position */}
+          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.05]">
+            <div
+              className="h-full bg-accent"
+              style={{ width: `${sp * 100}%`, transition: "width 0.05s linear" }}
+            />
+          </div>
         </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#060606] to-transparent pointer-events-none" />
       </section>
 
       {/* ──────────────────────────────────────
