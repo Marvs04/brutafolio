@@ -11,8 +11,6 @@ import { ProjectsPage } from "./pages/ProjectsPage";
 import { CVPage } from "./pages/CVPage";
 import { FundamentalsPage } from "./pages/FundamentalsPage";
 import { ReadmePage } from "./pages/ReadmePage";
-import { EntreprisePage } from "./pages/EntreprisePage";
-import { ModuleDetailPage } from "./pages/ModuleDetailPage";
 
 export default function App() {
   const { blueprintMode, toggleBlueprintMode } = useBlueprint();
@@ -38,8 +36,6 @@ export default function App() {
             <Route path="/projects/:id" element={<ReadmePage />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/fundamentals" element={<FundamentalsPage />} />
-            <Route path="/enterprise" element={<EntreprisePage />} />
-            <Route path="/enterprise/modulo/:id" element={<ModuleDetailPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>

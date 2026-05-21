@@ -227,12 +227,11 @@ export const HomePage: React.FC = () => {
         data-blueprint="organism:about"
         data-blueprint-id="about"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ width: 953 * 2 + 'px', height: '584px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
 
           {/* Bio */}
           <div
-            className="flex flex-col h-full border-b-2 lg:border-b-0 lg:border-r-2 border-ink px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8"
-            style={{ width: '953px', height: '584px' }}
+            className="flex flex-col border-b-2 lg:border-b-0 lg:border-r-2 border-ink px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8"
             data-blueprint="molecule:about-bio"
             data-blueprint-id="about-bio"
           >
@@ -255,8 +254,7 @@ export const HomePage: React.FC = () => {
 
           {/* Tech Mosaic */}
           <div
-            className="flex flex-col h-full px-8 md:px-14 lg:px-16 py-16 md:py-20"
-            style={{ width: '953px', height: '584px' }}
+            className="flex flex-col px-8 md:px-14 lg:px-16 py-16 md:py-20"
             data-blueprint="molecule:about-stack"
             data-blueprint-id="about-stack"
           >
@@ -279,11 +277,10 @@ export const HomePage: React.FC = () => {
         data-blueprint="organism:think-blueprint"
         data-blueprint-id="think-blueprint"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ width: 953 * 2 + 'px', height: '584px' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
           {/* LEFT — How I Think */}
           <div
-            className="border-b-2 lg:border-b-0 lg:border-r-2 border-white/10 px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8 h-full"
-            style={{ width: '953px', height: '584px' }}
+            className="border-b-2 lg:border-b-0 lg:border-r-2 border-white/10 px-8 md:px-14 lg:px-16 py-16 md:py-20 space-y-8"
             data-blueprint="molecule:think-section"
             data-blueprint-id="think-section"
           >
@@ -353,8 +350,7 @@ export const HomePage: React.FC = () => {
 
           {/* RIGHT — Blueprint Mode */}
           <div
-            className="px-8 md:px-14 lg:px-16 py-16 md:py-20 flex flex-col justify-between h-full"
-            style={{ width: '953px', height: '584px' }}
+            className="px-8 md:px-14 lg:px-16 py-16 md:py-20 flex flex-col justify-between"
             data-blueprint="molecule:blueprint-card"
             data-blueprint-id="blueprint-card"
           >
